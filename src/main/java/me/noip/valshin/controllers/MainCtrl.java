@@ -19,4 +19,8 @@ public class MainCtrl {
 	public String login(){
 		return "login";
 	}
+	@RequestMapping("phonebook")
+	public String phonebook(){
+		return "phonebook";
+	}
 }

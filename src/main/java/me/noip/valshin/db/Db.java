@@ -3,8 +3,9 @@ package me.noip.valshin.db;
 import java.util.List;
 
 import me.noip.valshin.db.entities.Note;
+import me.noip.valshin.db.entities.User;
 
-public interface Db {
+public interface Db{
 	public int addNote(Note note);
 	public int updateNote(Note note);
 	public int deleteNote(Note note);
@@ -12,4 +13,7 @@ public interface Db {
 	public List<Note> getByLastName(String lastName);
 	public List<Note> getByPhone(String lastName);
 	public List<Note> getData();
+	
+	public int addUser(User user);
+	public User getUser(String login, String password);
 }

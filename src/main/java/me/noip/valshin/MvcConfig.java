@@ -6,10 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import me.noip.valshin.db.Db;
+import me.noip.valshin.db.services.FileDB;
+import me.noip.valshin.db.services.MySqlDB;
 import me.noip.valshin.db.services.RamDB;
+import me.noip.valshin.entities.constants.DbTypes;
+import me.noip.valshin.exceptions.CoreException;
 
 @Configuration
 @EnableAutoConfiguration
@@ -21,20 +24,18 @@ public class MvcConfig {
 	
 	@Bean
 	public Db db(){
-		return new RamDB();
-//		if (dbType.equals(DbTypes.RAM)){
-//		}
-//		throw new CoreException("unknown database type:" + dbType);
+		if (dbType.equals(DbTypes.RAM)){
+			return new RamDB();
+		}
+		if (dbType.equals(DbTypes.FILE)){
+			return new FileDB();
+		}
+		if (dbType.equals(DbTypes.MYSQL)){
+			return new MySqlDB();
+		}
+		throw new CoreException("unknown database type:" + dbType);
 	}
 	
-	@Bean(name = "dataSource")
-    public DriverManagerDataSource dataSource() {
-    	DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-		driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/userbase");
-		driverManagerDataSource.setUsername("root");
-		driverManagerDataSource.setPassword("root");
-		return driverManagerDataSource;
-	}
-     
+//	public get
+//	@bean
 }

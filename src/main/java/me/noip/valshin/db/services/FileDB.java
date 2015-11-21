@@ -1,56 +1,41 @@
 package me.noip.valshin.db.services;
 
-import java.util.HashMap;
+import java.io.File;
 import java.util.List;
-import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Value;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
 
-public class RamDB implements Db{
-	private Map<String, Note> data = new HashMap<>();
-
-	private String getKey(Note note){
-		return note.getName()+note.getSecondName()+note.getLastName();
-	}
+public class FileDB implements Db{
+	@Value("${fileDbPath}")
+	private String fileDbPath;
+	private File file;
 	
+	public FileDB() {
+		file = new File(fileDbPath);
+	}
+
 	@Override
 	public int addNote(Note note) {
-		String key = getKey(note);
-		if (data.containsKey(key)){
-			return 1;
-		}
-		data.put(key, note);
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int updateNote(Note note) {
-		String key = getKey(note);
-		if (data.containsKey(key)){
-			data.put(key, note);
-			return 0;
-		}
-		return 1;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public int deleteNote(Note note) {
-		String key = getKey(note);
-		if (data.containsKey(key)){
-			data.remove(key);
-			return 0;
-		}
-		return 1;
+		// TODO Auto-generated method stub
+		return 0;
 	}
-	
-	@Override
-	public List<Note> getData() {
-		List<Note> copy = (List<Note>) data.values();
-		return copy;
-	}
-	
+
 	@Override
 	public List<Note> getByName(String name) {
 		// TODO Auto-generated method stub
@@ -70,6 +55,12 @@ public class RamDB implements Db{
 	}
 
 	@Override
+	public List<Note> getData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public int addUser(User user) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -80,4 +71,5 @@ public class RamDB implements Db{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }
