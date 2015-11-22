@@ -1,4 +1,5 @@
 CREATE DATABASE IF NOT EXISTS `phonebook_by_valshin` DEFAULT CHARSET=utf8 ;
+
 USE `phonebook_by_valshin` ;
 
 CREATE TABLE IF NOT EXISTS `notes` (

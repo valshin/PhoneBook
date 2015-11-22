@@ -10,21 +10,17 @@ import me.noip.valshin.db.Db;
 import me.noip.valshin.entities.constants.Templates;
 
 @Controller
-@RequestMapping(Templates.PHONEBOOK_PATH)
-public class PhoneBookCtrl {
+@RequestMapping(Templates.REGISTRATION_PATH)
+public class RegistrationCtrl {
 	@Autowired
 	Db db;
 	
-	@RequestMapping("add")
+	@RequestMapping("do")
 	@ResponseBody
 	public String add(
-			@RequestParam String firstName, 
-			@RequestParam String secondName,
-			@RequestParam String lastName,
-			@RequestParam String phone,
-			@RequestParam String homeName,
-			@RequestParam String adress,
-			@RequestParam String email){
+			@RequestParam String login, 
+			@RequestParam String pass,
+			@RequestParam String fio){
 		return "AD_____________________________AD";
 	}
 }
