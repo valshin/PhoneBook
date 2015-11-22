@@ -1,5 +1,6 @@
 package me.noip.valshin;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +37,11 @@ public class MvcConfig {
 	@Bean
 	public CustomAuthenticationProvider customAuthenticationProvider(){
 		return new CustomAuthenticationProvider();
+	}
+	
+	@Bean
+	public ObjectMapper mapper(){
+		return new ObjectMapper();
 	}
 	
 //	public get

@@ -1,20 +1,26 @@
 package me.noip.valshin.db.services;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
+import me.noip.valshin.db.entities.RamStorage;
 import me.noip.valshin.db.entities.User;
 
 public class RamDB implements Db{
-	protected Map<String, User> users;
+	protected RamStorage storage;
 	protected Map<String, Note> notes;
+	protected Map<String, User> users;
 	
 	public RamDB() {
-		users = new HashMap<>();
-		notes = new HashMap<>();
+		storage = new RamStorage();
+		init();
+	}
+	
+	protected void init(){
+		users = storage.getUsers();
+		notes = storage.getNotes();
 	}
 
 	private String getKey(Note note){

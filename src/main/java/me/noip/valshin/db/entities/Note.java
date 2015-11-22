@@ -8,6 +8,7 @@ public class Note {
 	private String workPhone;
 	private String adress;
 	private String email;
+	private String owner;
 	
 	public String getName() {
 		return name;
@@ -51,7 +52,12 @@ public class Note {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
 	
 }
 
