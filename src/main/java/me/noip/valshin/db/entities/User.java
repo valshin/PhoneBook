@@ -5,7 +5,7 @@ public class User {
 	private String password;
 	private String fio;
 	
-	public String getName() {
+	public String getLogin() {
 		return login;
 	}
 	public void setName(String name) {

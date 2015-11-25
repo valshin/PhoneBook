@@ -6,28 +6,40 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import me.noip.valshin.authentication.CustomAuthenticationProvider;
+import me.noip.valshin.entities.constants.Templates;
+import me.noip.valshin.entities.constants.UserRoles;
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+    private CustomAuthenticationProvider customAuthenticationProvider;
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/", "/about").permitAll()
+                .antMatchers("/", Templates.REGISTRATION_PATH).permitAll()
+                .antMatchers(Templates.PHONEBOOK_PATH).access(getRoleDescription(UserRoles.USER))
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
-                .loginPage("/login")
+                .loginPage(Templates.LOGIN_PATH)
                 .permitAll()
                 .and()
             .logout()
                 .permitAll();
     }
+    
+    private String getRoleDescription(String role){
+    	return "hasRole('" + role + "')";
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .inMemoryAuthentication()
-                .withUser("u").password("p").roles("USER");
+        auth.authenticationProvider(customAuthenticationProvider);
+//            .inMemoryAuthentication()
+//                .withUser("u").password("p").roles("USER");
     }
 }

@@ -1,75 +1,64 @@
 package me.noip.valshin.db.services;
 
-import java.io.File;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
+import me.noip.valshin.db.entities.RamStorage;
 import me.noip.valshin.db.entities.User;
 
-public class FileDB implements Db{
-	@Value("${fileDbPath}")
-	private String fileDbPath;
-	private File file;
+public class FileDB extends RamDB{
+	@Value("${File_DB_Path}")
+	private String path;
+	@Autowired
+	private ObjectMapper mapper;
 	
 	public FileDB() {
-		file = new File(fileDbPath);
+		storage = readData();
+		init();
 	}
-
+	
+	private RamStorage readData(){
+		try {
+			return (RamStorage) mapper.readValue(new FileInputStream(path), RamStorage.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private int writeData(){
+		try {
+			mapper.writeValue(new FileOutputStream(path), storage);
+			return 0;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+	
 	@Override
 	public int addNote(Note note) {
-		// TODO Auto-generated method stub
-		return 0;
+		return super.addNote(note) + writeData();
 	}
-
+	
 	@Override
 	public int updateNote(Note note) {
-		// TODO Auto-generated method stub
-		return 0;
+		return super.updateNote(note) + writeData();
 	}
-
+	
 	@Override
 	public int deleteNote(Note note) {
-		// TODO Auto-generated method stub
-		return 0;
+		return super.deleteNote(note) + writeData();
 	}
-
-	@Override
-	public List<Note> getByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Note> getByLastName(String lastName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Note> getByPhone(String lastName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Note> getData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public int addUser(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+		return super.addUser(user) + writeData();
 	}
-
-	@Override
-	public User getUser(String login, String password) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

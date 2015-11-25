@@ -1,15 +1,27 @@
 package me.noip.valshin.db.services;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
+import me.noip.valshin.db.entities.RamStorage;
 import me.noip.valshin.db.entities.User;
 
 public class RamDB implements Db{
-	private Map<String, Note> data = new HashMap<>();
+	protected RamStorage storage;
+	protected Map<String, Note> notes;
+	protected Map<String, User> users;
+	
+	public RamDB() {
+		storage = new RamStorage();
+		init();
+	}
+	
+	protected void init(){
+		users = storage.getUsers();
+		notes = storage.getNotes();
+	}
 
 	private String getKey(Note note){
 		return note.getName()+note.getSecondName()+note.getLastName();
@@ -18,18 +30,18 @@ public class RamDB implements Db{
 	@Override
 	public int addNote(Note note) {
 		String key = getKey(note);
-		if (data.containsKey(key)){
+		if (notes.containsKey(key)){
 			return 1;
 		}
-		data.put(key, note);
+		notes.put(key, note);
 		return 0;
 	}
 
 	@Override
 	public int updateNote(Note note) {
 		String key = getKey(note);
-		if (data.containsKey(key)){
-			data.put(key, note);
+		if (notes.containsKey(key)){
+			notes.put(key, note);
 			return 0;
 		}
 		return 1;
@@ -38,8 +50,8 @@ public class RamDB implements Db{
 	@Override
 	public int deleteNote(Note note) {
 		String key = getKey(note);
-		if (data.containsKey(key)){
-			data.remove(key);
+		if (notes.containsKey(key)){
+			notes.remove(key);
 			return 0;
 		}
 		return 1;
@@ -47,7 +59,7 @@ public class RamDB implements Db{
 	
 	@Override
 	public List<Note> getData() {
-		List<Note> copy = (List<Note>) data.values();
+		List<Note> copy = (List<Note>) notes.values();
 		return copy;
 	}
 	
