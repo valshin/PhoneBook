@@ -8,7 +8,7 @@ public class User {
 	public String getLogin() {
 		return login;
 	}
-	public void setName(String name) {
+	public void setLogin(String name) {
 		this.login = name;
 	}
 	public String getFio() {

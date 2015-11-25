@@ -1,64 +1,41 @@
 package me.noip.valshin.db.services;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import me.noip.valshin.db.entities.Note;
-import me.noip.valshin.db.entities.RamStorage;
 import me.noip.valshin.db.entities.User;
+import me.noip.valshin.tools.io.services.JsonRW;
 
 public class FileDB extends RamDB{
-	@Value("${File_DB_Path}")
-	private String path;
 	@Autowired
-	private ObjectMapper mapper;
+	private JsonRW io;
 	
 	public FileDB() {
-		storage = readData();
+		storage = io.readData();
 		init();
 	}
 	
-	private RamStorage readData(){
-		try {
-			return (RamStorage) mapper.readValue(new FileInputStream(path), RamStorage.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	private int writeData(){
-		try {
-			mapper.writeValue(new FileOutputStream(path), storage);
-			return 0;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return 1;
+	private int write(){
+		return io.writeData(storage);
 	}
 	
 	@Override
 	public int addNote(Note note) {
-		return super.addNote(note) + writeData();
+		return super.addNote(note) + write();
 	}
 	
 	@Override
 	public int updateNote(Note note) {
-		return super.updateNote(note) + writeData();
+		return super.updateNote(note) + write();
 	}
 	
 	@Override
 	public int deleteNote(Note note) {
-		return super.deleteNote(note) + writeData();
+		return super.deleteNote(note) + write();
 	}
 	
 	@Override
 	public int addUser(User user) {
-		return super.addUser(user) + writeData();
+		return super.addUser(user) + write();
 	}
 }
