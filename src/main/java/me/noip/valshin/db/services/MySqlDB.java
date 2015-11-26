@@ -9,21 +9,18 @@ import me.noip.valshin.db.entities.User;
 public class MySqlDB implements Db{
 
 	@Override
-	public int addNote(Note note) {
+	public void addNote(Note note) {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
-	public int updateNote(Note note) {
+	public void updateNote(Note note) {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
-	public int deleteNote(Note note) {
+	public void deleteNote(Note note) {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -45,15 +42,14 @@ public class MySqlDB implements Db{
 	}
 
 	@Override
-	public List<Note> getData() {
+	public List<Note> getNotesData() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int addUser(User user) {
+	public void addUser(User user) {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

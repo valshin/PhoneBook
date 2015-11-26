@@ -5,7 +5,7 @@ public class Note {
 	private String secondName;
 	private String lastName;
 	private String homePhone;
-	private String workPhone;
+	private String phone;
 	private String adress;
 	private String email;
 	private String owner;
@@ -34,11 +34,11 @@ public class Note {
 	public void setHomePhone(String homePhone) {
 		this.homePhone = homePhone;
 	}
-	public String getWorkPhone() {
-		return workPhone;
+	public String getPhone() {
+		return phone;
 	}
-	public void setWorkPhone(String workPhone) {
-		this.workPhone = workPhone;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	public String getAdress() {
 		return adress;
@@ -59,6 +59,28 @@ public class Note {
 		this.owner = owner;
 	}
 	
+	public boolean isEqual(Note note){
+		return 	getName().equals(note.getName()) && 
+				getSecondName().equals(note.getSecondName()) &&
+				getLastName().equals(note.getLastName()) &&
+				getPhone().equals(note.getPhone()) &&
+				(getHomePhone() == note.getHomePhone() || getHomePhone().equals(note.getHomePhone())) &&
+				(getAdress() == note.getAdress() || getAdress().equals(note.getAdress())) &&
+				(getEmail() == note.getEmail() || getEmail().equals(note.getEmail())) &&
+				getOwner().equals(note.getOwner());
+	}
+	
+	public Note clone(Note note){
+		Note newNote = new Note();
+		newNote.setName(note.getName());
+		newNote.setSecondName(note.getSecondName());
+		newNote.setLastName(note.getLastName());
+		newNote.setPhone(note.getPhone());
+		newNote.setHomePhone(note.getHomePhone());
+		newNote.setAdress(note.getAdress());
+		newNote.setEmail(note.getEmail());
+		return 	newNote;
+	}
 }
 
 

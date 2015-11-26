@@ -4,16 +4,17 @@ import java.util.List;
 
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
+import me.noip.valshin.exceptions.RamDbException;
 
 public interface Db{
-	public int addNote(Note note);
-	public int updateNote(Note note);
-	public int deleteNote(Note note);
+	public void addNote(Note note) throws RamDbException;
+	public void updateNote(Note note) throws RamDbException;
+	public void deleteNote(Note note) throws RamDbException;
 	public List<Note> getByName(String name);
 	public List<Note> getByLastName(String lastName);
-	public List<Note> getByPhone(String lastName);
-	public List<Note> getData();
+	public List<Note> getByPhone(String phone);
+	public List<Note> getNotesData();
 	
-	public int addUser(User user);
+	public void addUser(User user) throws RamDbException;
 	public User getUser(String login, String password);
 }

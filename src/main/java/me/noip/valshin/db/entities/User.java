@@ -23,5 +23,20 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public boolean isEqual(User user){
+		return 
+				getLogin().equals(user.getLogin()) && 
+				getPassword().equals(user.getPassword()) &&
+				getFio().equals(user.getFio());
+	}
+	
+	public User clone(User user){
+		User newUser = new User();
+		newUser.setLogin(user.getLogin());
+		newUser.setPassword(user.getPassword());
+		newUser.setFio(user.getFio());
+		return 	newUser;
+	}
 }
 
