@@ -1,4 +1,4 @@
-package me.noip.valshin.dataSourceConfig;
+package me.noip.valshin.config;
 
 import javax.sql.DataSource;
 

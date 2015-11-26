@@ -6,53 +6,51 @@ import java.io.IOException;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import me.noip.valshin.config.Config;
 import me.noip.valshin.db.entities.RamStorage;
+import me.noip.valshin.exceptions.CoreException;
+import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.io.DataRW;
 
 @Service
 public class JsonRW implements DataRW {
-	@Autowired
-	private ObjectMapper mapper;
+	private ObjectMapper mapper = new ObjectMapper();
+	@Autowired 
+	Config config; 
 	
-	@Value("${File_DB_Path}")
-	private String path;
-
 	@Override
-	public RamStorage readData() {
+	public RamStorage readData() throws IOException {
 		RamStorage data = null;
 		FileInputStream fis = null;
 		try {
-			fis = new FileInputStream(path);
+			fis = new FileInputStream(config.getFileDbPath());
 	        try {
 	        	data = mapper.readValue(fis, RamStorage.class);
 	        } finally {
 	        	fis.close();
 	        }
 	    } catch (IOException e) {
-	    	e.printStackTrace();
+	    	throw e;
 	    }
 		return data;
 	}
 
 	@Override
-	public int writeData(RamStorage storage) {
+	public void writeData(RamStorage storage) throws IOException {
 		FileOutputStream fos = null;
 		try {
-			System.out.println(path);
-			fos = new FileOutputStream(path);
+			System.out.println(config.getFileDbPath());
+			fos = new FileOutputStream(config.getFileDbPath());
 	        try {
-	        	mapper.writeValue(new FileOutputStream(path), storage);
+	        	mapper.writeValue(new FileOutputStream(config.getFileDbPath()), storage);
 	        } finally {
 	        	fos.close();
 	        }
-	        return 0;
 	    } catch (IOException e) {
-	    	e.printStackTrace();
+	    	throw e;
 	    }
-		return 1;
 	}
 }
 

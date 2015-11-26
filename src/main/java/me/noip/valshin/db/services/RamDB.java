@@ -1,12 +1,15 @@
 package me.noip.valshin.db.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.RamStorage;
 import me.noip.valshin.db.entities.User;
+import me.noip.valshin.exceptions.RamDbException;
 
 public class RamDB implements Db{
 	protected RamStorage storage;
@@ -23,73 +26,97 @@ public class RamDB implements Db{
 		notes = storage.getNotes();
 	}
 
-	private String getKey(Note note){
+	private String getNoteKey(Note note){
 		return note.getName()+note.getSecondName()+note.getLastName();
 	}
 	
 	@Override
-	public int addNote(Note note) {
-		String key = getKey(note);
+	public void addNote(Note note) throws RamDbException {
+		String key = getNoteKey(note);
 		if (notes.containsKey(key)){
-			return 1;
+			throw new RamDbException("Note with key '" + key + "' already exists");
 		}
 		notes.put(key, note);
-		return 0;
 	}
 
 	@Override
-	public int updateNote(Note note) {
-		String key = getKey(note);
+	public void updateNote(Note note) throws RamDbException {
+		String key = getNoteKey(note);
 		if (notes.containsKey(key)){
 			notes.put(key, note);
-			return 0;
 		}
-		return 1;
+		throw new RamDbException("No note with key '" + key + "'");
 	}
 
 	@Override
-	public int deleteNote(Note note) {
-		String key = getKey(note);
+	public void deleteNote(Note note) throws RamDbException {
+		String key = getNoteKey(note);
 		if (notes.containsKey(key)){
 			notes.remove(key);
-			return 0;
 		}
-		return 1;
+		throw new RamDbException("No note with key '" + key + "'");
 	}
 	
 	@Override
-	public List<Note> getData() {
+	public List<Note> getNotesData() {
 		List<Note> copy = (List<Note>) notes.values();
 		return copy;
 	}
 	
 	@Override
 	public List<Note> getByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Note> out = new ArrayList<>();
+		for (Entry<String, Note> entry : notes.entrySet()){
+			Note note = entry.getValue();
+			if (note.getName().equals(name)){
+				out.add(note);
+			}
+		}
+		return out;
 	}
 
 	@Override
 	public List<Note> getByLastName(String lastName) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Note> out = new ArrayList<>();
+		for (Entry<String, Note> entry : notes.entrySet()){
+			Note note = entry.getValue();
+			if (note.getLastName().equals(lastName)){
+				out.add(note);
+			}
+		}
+		return out;
 	}
 
 	@Override
-	public List<Note> getByPhone(String lastName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Note> getByPhone(String phone) {
+		List<Note> out = new ArrayList<>();
+		for (Entry<String, Note> entry : notes.entrySet()){
+			Note note = entry.getValue();
+			if (note.getPhone().equals(phone)){
+				out.add(note);
+			}
+		}
+		return out;
 	}
+	
+	private String getUserKey(User user){
+		return user.getLogin()+user.getPassword();
+	} 
 
 	@Override
-	public int addUser(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void addUser(User user) throws RamDbException {
+		for (Entry<String, User> entry : users.entrySet()){
+			User u = entry.getValue();
+			if (user.getLogin().equals(u.getLogin())){
+				throw new RamDbException("User with neame '" + user.getLogin() + "' already exist");
+			}
+		}
+		users.put(getUserKey(user), user);
 	}
 
 	@Override
 	public User getUser(String login, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		String key = login + password;
+		return users.get(key);
 	}
 }
