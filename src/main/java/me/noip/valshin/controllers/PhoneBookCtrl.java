@@ -1,5 +1,7 @@
 package me.noip.valshin.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +23,7 @@ public class PhoneBookCtrl {
 	@Autowired
 	Validator validator;
 	
-	@RequestMapping(value = "add" , method = RequestMethod.POST)
-	public @ResponseBody String add(@RequestBody Note note) {
+	private String checkNote(Note note){
 		if (!validator.checkName(note.getName())){
 			return "NameError";
 		};
@@ -44,11 +45,68 @@ public class PhoneBookCtrl {
 		if (!validator.checkEmail(note.getEmail())){
 			return "EmailError";
 		};
+		return null;
+	};
+	
+	@RequestMapping(value = "add" , method = RequestMethod.POST)
+	public @ResponseBody String add(@RequestBody Note note) {
+		String error = checkNote(note);
+		if (error != null){
+			return error;
+		}
 		try {
 			db.addNote(note);
-			return "NoteOK";
+			return "Sucsess";
 		} catch (RamDbException e) {
 			return e.getMessage();
 		}
+	}
+	
+	@RequestMapping(value = "update" , method = RequestMethod.POST)
+	public @ResponseBody String update(@RequestBody Note note) {
+		String error = checkNote(note);
+		if (error != null){
+			return error;
+		}
+		try {
+			db.updateNote(note);
+			return "Sucsess";
+		} catch (RamDbException e) {
+			return e.getMessage();
+		}
+	}
+	
+	@RequestMapping(value = "delete" , method = RequestMethod.POST)
+	public @ResponseBody String delete(@RequestBody Note note) {
+		String error = checkNote(note);
+		if (error != null){
+			return error;
+		}
+		try {
+			db.deleteNote(note);
+			return "Sucscess";
+		} catch (RamDbException e) {
+			return e.getMessage();
+		}
+	}
+	
+	@RequestMapping(value = "get_by_name" , method = RequestMethod.POST)
+	public @ResponseBody List<Note> getByName(@RequestBody String name) {
+		return db.getByName(name);
+	}
+	
+	@RequestMapping(value = "get_by_lastname" , method = RequestMethod.POST)
+	public @ResponseBody List<Note> getByLastName(@RequestBody String lastName) {
+		return db.getByLastName(lastName);
+	}
+	
+	@RequestMapping(value = "get_by_phone" , method = RequestMethod.POST)
+	public @ResponseBody List<Note> getByPhone(@RequestBody String phone) {
+		return db.getByPhone(phone);
+	}
+	
+	@RequestMapping(value = "get_all" , method = RequestMethod.POST)
+	public @ResponseBody List<Note> getAll() {
+		return db.getNotesData();
 	}
 }

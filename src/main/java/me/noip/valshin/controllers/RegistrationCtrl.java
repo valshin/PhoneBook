@@ -34,7 +34,7 @@ public class RegistrationCtrl {
 		};
 		try {
 			db.addUser(user);
-			return "UserOK";
+			return "Sucscess";
 		} catch (RamDbException e) {
 			return e.getMessage();
 		}
