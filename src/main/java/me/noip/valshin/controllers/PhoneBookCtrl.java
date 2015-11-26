@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.noip.valshin.db.Db;
@@ -90,22 +91,22 @@ public class PhoneBookCtrl {
 		}
 	}
 	
-	@RequestMapping(value = "get_by_name" , method = RequestMethod.POST)
-	public @ResponseBody List<Note> getByName(@RequestBody String name) {
+	@RequestMapping("get_by_name")
+	public @ResponseBody List<Note> getByName(@RequestParam String name) {
 		return db.getByName(name);
 	}
 	
-	@RequestMapping(value = "get_by_lastname" , method = RequestMethod.POST)
-	public @ResponseBody List<Note> getByLastName(@RequestBody String lastName) {
+	@RequestMapping("get_by_lastname")
+	public @ResponseBody List<Note> getByLastName(@RequestParam String lastName) {
 		return db.getByLastName(lastName);
 	}
 	
-	@RequestMapping(value = "get_by_phone" , method = RequestMethod.POST)
-	public @ResponseBody List<Note> getByPhone(@RequestBody String phone) {
+	@RequestMapping("get_by_phone")
+	public @ResponseBody List<Note> getByPhone(@RequestParam String phone) {
 		return db.getByPhone(phone);
 	}
 	
-	@RequestMapping(value = "get_all" , method = RequestMethod.POST)
+	@RequestMapping("get_all")
 	public @ResponseBody List<Note> getAll() {
 		return db.getNotesData();
 	}
