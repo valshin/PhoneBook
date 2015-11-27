@@ -1,0 +1,6 @@
+File_DB_Path=phonebook.db
+DB_Type=file
+DB_Login=localhost
+DB_Name=phonebook_by_valshin
+DB_User=root
+DB_Password=root
