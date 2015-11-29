@@ -14,7 +14,7 @@ import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.data.Validator;
 
 @Controller
-@RequestMapping(Sources.REGISTRATION_PATH)
+@RequestMapping(Sources.REGISTER_PATH)
 public class RegistrationCtrl {
 	@Autowired
 	Db db;

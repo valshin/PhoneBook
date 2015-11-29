@@ -1,0 +1,17 @@
+include ../mixins/header
+include ../mixins/mainContainer
+include ../mixins/col
+doctype html
+html(ng-app="app")
+    head
+        title Spring Security Example
+        meta(charset="utf-8")
+        +header
+    body
+        +mainContainer
+            +col(12)
+                div(ng-controller="mainCtrl")
+                    uib-tabset(justified="true")
+                        uib-tab(heading="Register") Register New User
+                        uib-tab(heading="PhoneBook") Go to phonebook
+                    a(class="btn btn-primary", href="login", role = "button") Login
