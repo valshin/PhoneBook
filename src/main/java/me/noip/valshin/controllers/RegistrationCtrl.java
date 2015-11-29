@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.User;
-import me.noip.valshin.entities.constants.Templates;
+import me.noip.valshin.entities.constants.Sources;
 import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.data.Validator;
 
 @Controller
-@RequestMapping(Templates.REGISTRATION_PATH)
+@RequestMapping(Sources.REGISTRATION_PATH)
 public class RegistrationCtrl {
 	@Autowired
 	Db db;
@@ -38,5 +38,10 @@ public class RegistrationCtrl {
 		} catch (RamDbException e) {
 			return e.getMessage();
 		}
+	}
+	
+	@RequestMapping("register")
+	public String register() {
+		return "register";
 	}
 }

@@ -2,10 +2,11 @@ package me.noip.valshin.db.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
-
 public class MySqlDB implements Db{
 
 	@Override

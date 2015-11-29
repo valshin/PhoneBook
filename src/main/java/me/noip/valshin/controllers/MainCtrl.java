@@ -4,25 +4,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import me.noip.valshin.entities.constants.Templates;
+import me.noip.valshin.entities.constants.Sources;
 
 @Controller
 @RequestMapping("/")
 public class MainCtrl {
-	@RequestMapping(method = RequestMethod.GET, value="/")
-	public String welcome(){
-		return Templates.INDEX;
-	}
-	@RequestMapping(Templates.LOGIN)
+//	@RequestMapping(method = RequestMethod.GET, value="/", produces = "text/html")
+//	public String welcome(){
+//		return Templates.INDEX;
+//	}
+	@RequestMapping(Sources.LOGIN)
 	public String login(){
-		return Templates.LOGIN;
+		return Sources.LOGIN;
 	}
-	@RequestMapping(Templates.PHONEBOOK)
+	@RequestMapping(Sources.PHONEBOOK)
 	public String phonebook(){
-		return Templates.PHONEBOOK;
+		return Sources.PHONEBOOK;
 	}
-	@RequestMapping(Templates.REGISTRATION)
+	@RequestMapping(Sources.REGISTRATION)
 	public String registration(){
-		return Templates.REGISTRATION;
+		return Sources.REGISTRATION;
 	}
 }

@@ -10,7 +10,6 @@ import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.RamStorage;
 import me.noip.valshin.db.entities.User;
 import me.noip.valshin.exceptions.RamDbException;
-
 public class RamDB implements Db{
 	protected RamStorage storage;
 	protected Map<String, Note> notes;

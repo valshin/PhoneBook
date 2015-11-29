@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 
 import me.noip.valshin.config.Config;
 import me.noip.valshin.db.entities.RamStorage;
-import me.noip.valshin.exceptions.CoreException;
-import me.noip.valshin.exceptions.RamDbException;
+import me.noip.valshin.tools.FileTools;
 import me.noip.valshin.tools.io.DataRW;
 
 @Service
@@ -24,17 +23,22 @@ public class JsonRW implements DataRW {
 	public RamStorage readData() throws IOException {
 		RamStorage data = null;
 		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(config.getFileDbPath());
-	        try {
-	        	data = mapper.readValue(fis, RamStorage.class);
-	        } finally {
-	        	fis.close();
-	        }
-	    } catch (IOException e) {
-	    	throw e;
-	    }
-		return data;
+		if (!FileTools.exists(config.getFileDbPath())){
+			return new RamStorage();
+		} else {
+			try {
+				fis = new FileInputStream(config.getFileDbPath());
+		        try {
+		        	data = mapper.readValue(fis, RamStorage.class);
+		        } finally {
+		        	fis.close();
+		        }
+		    } catch (IOException e) {
+		    	throw e;
+		    }
+			return data;	
+		}
+		
 	}
 
 	@Override

@@ -1,55 +1,55 @@
 package me.noip.valshin.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
-import me.noip.valshin.entities.constants.Templates;
+import me.noip.valshin.entities.constants.Sources;
 import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.data.Validator;
+import me.noip.valshin.tools.json.JsonHelper;
 
 @Controller
-@RequestMapping(Templates.PHONEBOOK_PATH)
+@RequestMapping(Sources.PHONEBOOK_PATH)
 public class PhoneBookCtrl {
 	@Autowired
 	Db db;
 	@Autowired
 	Validator validator;
+	@Autowired
+	JsonHelper jsonHelper;
 	
 	private String checkNote(Note note){
 		if (!validator.checkName(note.getName())){
-			return "NameError";
+			return jsonHelper.errorAnswer("NameError");
 		};
 		if (!validator.checkSecondName(note.getSecondName())){
-			return "SecondNameError";
+			return jsonHelper.errorAnswer("SecondNameError");
 		};
 		if (!validator.checkLastName(note.getLastName())){
-			return "LastNameError";
+			return jsonHelper.errorAnswer("LastNameError");
 		};
 		if (!validator.checkPhone(note.getPhone())){
-			return "PhoneError";
+			return jsonHelper.errorAnswer("PhoneError");
 		};
 		if (!validator.checkPhone(note.getHomePhone())){
-			return "HomePhoneError";
+			return jsonHelper.errorAnswer("HomePhoneError");
 		};
 		if (!validator.checkAdress(note.getAdress())){
-			return "AdressError";
+			return jsonHelper.errorAnswer("AdressError");
 		};
 		if (!validator.checkEmail(note.getEmail())){
-			return "EmailError";
+			return jsonHelper.errorAnswer("EmailError");
 		};
 		return null;
 	};
 	
-	@RequestMapping(value = "add" , method = RequestMethod.POST)
+	@RequestMapping(value = "add")
 	public @ResponseBody String add(@RequestBody Note note) {
 		String error = checkNote(note);
 		if (error != null){
@@ -57,13 +57,13 @@ public class PhoneBookCtrl {
 		}
 		try {
 			db.addNote(note);
-			return "Sucsess";
+			return jsonHelper.okAnswer();
 		} catch (RamDbException e) {
-			return e.getMessage();
+			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
 	
-	@RequestMapping(value = "update" , method = RequestMethod.POST)
+	@RequestMapping(value = "update")
 	public @ResponseBody String update(@RequestBody Note note) {
 		String error = checkNote(note);
 		if (error != null){
@@ -71,43 +71,43 @@ public class PhoneBookCtrl {
 		}
 		try {
 			db.updateNote(note);
-			return "Sucsess";
+			return jsonHelper.okAnswer();
 		} catch (RamDbException e) {
-			return e.getMessage();
+			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
 	
-	@RequestMapping(value = "delete" , method = RequestMethod.POST)
+	@RequestMapping(value = "delete")
 	public @ResponseBody String delete(@RequestBody Note note) {
 		String error = checkNote(note);
 		if (error != null){
-			return error;
+			return jsonHelper.errorAnswer(error);
 		}
 		try {
 			db.deleteNote(note);
-			return "Sucscess";
+			return jsonHelper.okAnswer();
 		} catch (RamDbException e) {
-			return e.getMessage();
+			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
 	
 	@RequestMapping("get_by_name")
-	public @ResponseBody List<Note> getByName(@RequestParam String name) {
-		return db.getByName(name);
+	public @ResponseBody String getByName(@RequestParam String name) {
+		return jsonHelper.jsonAnswer(db.getByName(name));
 	}
 	
 	@RequestMapping("get_by_lastname")
-	public @ResponseBody List<Note> getByLastName(@RequestParam String lastName) {
-		return db.getByLastName(lastName);
+	public @ResponseBody String getByLastName(@RequestParam String lastName) {
+		return jsonHelper.jsonAnswer(db.getByLastName(lastName));
 	}
 	
 	@RequestMapping("get_by_phone")
-	public @ResponseBody List<Note> getByPhone(@RequestParam String phone) {
-		return db.getByPhone(phone);
+	public @ResponseBody String getByPhone(@RequestParam String phone) {
+		return jsonHelper.jsonAnswer(db.getByPhone(phone));
 	}
 	
 	@RequestMapping("get_all")
-	public @ResponseBody List<Note> getAll() {
-		return db.getNotesData();
+	public @ResponseBody String getAll() {
+		return jsonHelper.jsonAnswer(db.getNotesData());
 	}
 }

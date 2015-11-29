@@ -2,6 +2,8 @@ package me.noip.valshin.db.services;
 
 import java.io.IOException;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import me.noip.valshin.db.entities.Note;
@@ -9,15 +11,15 @@ import me.noip.valshin.db.entities.User;
 import me.noip.valshin.exceptions.CoreException;
 import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.io.services.JsonRW;
-
 public class FileDB extends RamDB{
 	@Autowired
 	private JsonRW io;
-	
-	public FileDB() throws IOException {
+	@PostConstruct
+	public void initBean() throws IOException{
 		storage = io.readData();
-		init();
+		super.init();
 	}
+	
 	
 	private void write() throws IOException {
 		io.writeData(storage);
