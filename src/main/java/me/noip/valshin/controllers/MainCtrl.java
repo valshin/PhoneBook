@@ -2,46 +2,66 @@ package me.noip.valshin.controllers;
 
 import java.security.Principal;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Controller;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import me.noip.valshin.entities.constants.Sources;
+import me.noip.valshin.db.Db;
+import me.noip.valshin.db.entities.User;
+import me.noip.valshin.exceptions.RamDbException;
+import me.noip.valshin.tools.data.Validator;
 
-@Controller
-@RequestMapping("/")
+@SpringBootApplication
+@RestController
 public class MainCtrl {
-//	@RequestMapping(method = RequestMethod.GET, value="/", produces = "text/html")
-//	public String welcome(){
-//		return Templates.INDEX;
-//	}
-	@RequestMapping(Sources.LOGIN)
-	public String login(){
-		return Sources.LOGIN;
+	
+	private Logger logger = Logger.getLogger(MainCtrl.class.getName());
+	@Autowired
+	Db db;
+	@Autowired
+	Validator validator;
+	
+	@RequestMapping(value = "/adduser" , method = RequestMethod.POST)
+	public @ResponseBody String add(
+			@RequestParam String login,
+			@RequestParam String fio,
+			@RequestParam String password
+			) {
+		logger.debug("Begin adding user...");
+		if (!validator.checkName(login)){
+			logger.error("LoginError");
+			return "LoginError";
+		};
+		if (!validator.checkSecondName(password)){
+			logger.error("PasswordError");
+			return "PasswordError";
+		};
+		if (!validator.checkLastName(fio)){
+			logger.error("FioError");
+			return "FioError";
+		};
+		
+		User user = new User();
+		user.setLogin(login);
+		user.setPassword(password);
+		user.setFio(fio);
+		try {
+			db.addUser(user);
+			logger.info("User added successfully");
+			return "OK";
+		} catch (RamDbException e) {
+			logger.error(e.getMessage());
+			return e.getMessage();
+		}
 	}
 	
-//	@RequestMapping("/register")
-//	public String logout(){
-//		return "register";
-//	}
-	
-	@RequestMapping(Sources.PHONEBOOK)
-	public String phonebook(){
-		return Sources.PHONEBOOK;
+	@RequestMapping("/user")
+	public Principal user(Principal user) {
+		return user;
 	}
-	@RequestMapping(Sources.REGISTER)
-	public String registration(){
-		return Sources.REGISTER;
-	}
-	
-	@RequestMapping(value = "/username", method = RequestMethod.GET)
-    @ResponseBody
-    public String home(Principal principal) {
-        if (principal == null) return "0";
-        // logic
-        return principal.toString();
-    }
 }

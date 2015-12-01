@@ -1,4 +1,4 @@
-package me.noip.valshin.authentication;
+package me.noip.valshin.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.User;
 import me.noip.valshin.entities.constants.UserRoles;
 
+@Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	Db db;

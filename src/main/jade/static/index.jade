@@ -1,17 +1,24 @@
 include ../mixins/header
-include ../mixins/mainContainer
-include ../mixins/col
+
 doctype html
-html(ng-app="app")
+html
     head
-        title Spring Security Example
-        meta(charset="utf-8")
+        title Hello AngularJS
         +header
-    body
-        +mainContainer
-            +col(12)
-                div(ng-controller="mainCtrl")
-                    uib-tabset(justified="true")
-                        uib-tab(heading="Register") Register New User
-                        uib-tab(heading="PhoneBook") Go to phonebook
-                    a(class="btn btn-primary", href="login", role = "button") Login
+        style(type='text/css').
+            [ng\:cloak], [ng-cloak], .ng-cloak {
+                display: none !important;
+            }
+    body.ng-cloak(ng-app='hello', ng-cloak='')
+        .container(ng-controller='navCtrl')
+            ul.nav.nav-pills(role='tablist')
+                li.active
+                    a(href='#/') home
+                li
+                    a(href='#/register') Register
+                li
+                    a(href='#/log_in') login
+                li(ng-show='authenticated')
+                    a(href='', ng-click='logout()') logout
+
+        .container(ng-view='')
