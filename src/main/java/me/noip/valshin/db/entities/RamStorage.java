@@ -1,11 +1,17 @@
 package me.noip.valshin.db.entities;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class RamStorage {
 	private Map<String, User> users;
 	private Map<String, Note> notes;
+	
+	public void init(){
+		users = new HashMap<String, User>();
+		notes = new HashMap<String, Note>();
+	}
 	
 	public Map<String, Note> getNotes() {
 		return notes;

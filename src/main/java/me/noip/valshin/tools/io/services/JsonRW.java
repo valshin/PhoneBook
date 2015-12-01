@@ -24,7 +24,9 @@ public class JsonRW implements DataRW {
 		RamStorage data = null;
 		FileInputStream fis = null;
 		if (!FileTools.exists(config.getFileDbPath())){
-			return new RamStorage();
+			RamStorage storage = new RamStorage();
+			storage.init();
+			return storage;
 		} else {
 			try {
 				fis = new FileInputStream(config.getFileDbPath());
