@@ -26,7 +26,7 @@ public class MainCtrl {
 	@Autowired
 	Validator validator;
 	
-	@RequestMapping(value = "/adduser" , method = RequestMethod.POST)
+	@RequestMapping(value = "/adduser" , method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
 	public @ResponseBody String add(
 			@RequestParam String login,
 			@RequestParam String fio,
