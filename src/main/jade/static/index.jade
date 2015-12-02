@@ -16,7 +16,7 @@ html
                     a(href='#/') home
                 li
                     a(href='#/register') Register
-                li
+                li(ng-show='!authenticated')
                     a(href='#/log_in') login
                 li(ng-show='authenticated')
                     a(href='', ng-click='logout()') logout
