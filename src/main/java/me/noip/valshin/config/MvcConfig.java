@@ -6,14 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.services.FileDB;
 import me.noip.valshin.db.services.MySqlDB;
 import me.noip.valshin.entities.constants.DbTypes;
 import me.noip.valshin.exceptions.CoreException;
-import me.noip.valshin.security.CustomAuthenticationProvider;
 
 @Configuration
 @EnableAutoConfiguration

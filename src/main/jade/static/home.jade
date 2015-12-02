@@ -1,6 +1,6 @@
-h1 Greeting
-   div(ng-show='authenticated')
-      p The ID is {{greeting.id}}
-      p The content is {{greeting.content}}
-   div(ng-show='!authenticated')
-      p Login to see your greeting
+include ../mixins/col
+
+div(ng-show='authenticated')
+   h3 Список записей
+div(ng-show='!authenticated')
+   h3 Здравствуйте, пожалуйста, авторизуйтесь

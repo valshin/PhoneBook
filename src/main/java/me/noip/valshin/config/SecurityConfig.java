@@ -52,9 +52,9 @@ public class SecurityConfig {
 		protected void configure(HttpSecurity http) throws Exception {
 			http.httpBasic().and().authorizeRequests()
 					.antMatchers("/user", "/adduser", "/register.html", "/index.html", "/home.html", "/log_in.html", "/").permitAll().anyRequest()
-					.authenticated().and().csrf()
+					.authenticated().and().logout().and().csrf()
 					.csrfTokenRepository(csrfTokenRepository()).and()
-					.addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
+					.addFilterBefore(csrfHeaderFilter(), CsrfFilter.class);
 		}
 
 		private Filter csrfHeaderFilter() {

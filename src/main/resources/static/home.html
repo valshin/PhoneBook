@@ -1,10 +1,7 @@
 
-<h1>Greeting
-  <div ng-show="authenticated">
-    <p>The ID is {{greeting.id}}</p>
-    <p>The content is {{greeting.content}}</p>
-  </div>
-  <div ng-show="!authenticated">
-    <p>Login to see your greeting</p>
-  </div>
-</h1>
+<div ng-show="authenticated">
+  <h3>Список записей</h3>
+</div>
+<div ng-show="!authenticated">
+  <h3>Здравствуйте, пожалуйста, авторизуйтесь</h3>
+</div>

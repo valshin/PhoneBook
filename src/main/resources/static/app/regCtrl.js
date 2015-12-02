@@ -1,11 +1,9 @@
-var app = angular.module('app',[]);
 app.controller('regCtrl', ['$scope', '$http', function($scope, $http){
     $scope.send = function(){
         debugger;
-        $scope.csrf = document.getElementById('csrf').value;
         $http({
             method: 'POST',
-            url: '/register/add',
+            url: '/adduser',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
                 //'Upgrade-Insecure-Requests': "1",
@@ -20,9 +18,7 @@ app.controller('regCtrl', ['$scope', '$http', function($scope, $http){
             data: {
                 login: $scope.login,
                 fio: $scope.fio,
-                password: $scope.password,
-                password_confirm: $scope.password_confirm,
-                _csrf: $scope.csrf
+                password: $scope.password
             }
         }).success(function(response){
             debugger;
