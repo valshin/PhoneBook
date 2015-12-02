@@ -1,5 +1,4 @@
 include ../mixins/header
-include ../mixins/col
 
 doctype html
 html
@@ -10,12 +9,16 @@ html
             [ng\:cloak], [ng-cloak], .ng-cloak {
                 display: none !important;
             }
-    body.ng-cloak(ng-app='app', ng-cloak='')
-        .container(ng-controller='mainCtrl')
-            +col(6)
-                uib-tabset
-                    uib-tab(heading='Телефонная книга', select="tabClick('/')", avtive="currentPath === '/'")
-                    uib-tab(heading='Войти' ng-show='!authenticated', select="tabClick('/log_in')", avtive="currentPath === '/log_in'")
-                    uib-tab(heading='Регистрация' ng-show='!authenticated', select="tabClick('/register')", avtive="currentPath === '/register'")
-                    uib-tab(heading='Выход' ng-show='authenticated', select="logout()")
-                .container(ng-view='')
+    body.ng-cloak(ng-app='hello', ng-cloak='')
+        .container(ng-controller='navCtrl')
+            ul.nav.nav-pills(role='tablist')
+                li.active
+                    a(href='#/') home
+                li
+                    a(href='#/register') Register
+                li(ng-show='!authenticated')
+                    a(href='#/log_in') login
+                li(ng-show='authenticated')
+                    a(href='', ng-click='logout()') logout
+
+        .container(ng-view='')
