@@ -1,0 +1,33 @@
+form.form-horizontal
+   fieldset
+      #legend
+         legend Регистрация
+      .control-group
+         // Login
+         label.control-label(for='login') Логин
+         .controls
+            input#login.input-xlarge(type='text', name='login', placeholder='', ng-model='login', value='valshin')
+            p.help-block Минимум 3 символа, без спецсимволов
+      .control-group
+         // Fio
+         label.control-label(for='fio') ФИО
+         .controls
+            input#fio.input-xlarge(type='text', name='fio', placeholder='ФИО', ng-model='fio', value='valeryshin')
+            p.help-block Минимум 5 символов
+      .control-group
+         // Password
+         label.control-label(for='password') Пароль
+         .controls
+            input#password.input-xlarge(type='password', name='password', placeholder='', ng-model='password')
+            p.help-block Минимум 5 символов, долен содерать минимум 1 заглавную букву и 1 цифру
+      .control-group
+         // Password
+         label.control-label(for='password_confirm') Пароль (подтверждение)
+         .controls
+            input#password_confirm.input-xlarge(type='password', name='password_confirm', placeholder='', ng-model='password_confirm')
+            p.help-block Подтверждение пароля
+      .control-group
+         // Button
+         .controls
+            button.btn.btn-success(ng-click='send()') Зарегистрироваться
+            // <button class="btn btn-success" type="submit">Зарегистрироваться</button>
