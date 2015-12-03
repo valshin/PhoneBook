@@ -12,10 +12,7 @@ html
             }
     body.ng-cloak(ng-app='app', ng-cloak='')
         .container(ng-controller='mainCtrl')
-            +col(6)
+            +col(9)
                 uib-tabset
-                    uib-tab(heading='Телефонная книга', select="tabClick('/')", avtive="currentPath === '/'")
-                    uib-tab(heading='Войти' ng-show='!authenticated', select="tabClick('/log_in')", avtive="currentPath === '/log_in'")
-                    uib-tab(heading='Регистрация' ng-show='!authenticated', select="tabClick('/register')", avtive="currentPath === '/register'")
-                    uib-tab(heading='Выход' ng-show='authenticated', select="logout()")
-                .container(ng-view='')
+                    uib-tab(ng-repeat='tab in tabs', heading='{{tab.title}}', ui-sref='{{tab.route}}', active="tab.active", disable="tab.disabled", select="tabClick()", ng-show="tab.visible")
+                div(ui-view)
