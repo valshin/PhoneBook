@@ -108,7 +108,6 @@ app.controller('mainCtrl', function($rootScope, $scope, $http, $state){
 app.controller('logoutCtrl', function($rootScope, $scope, $http, $state){
     $rootScope.logout(function(){
         if (!$rootScope.authenticated){
-            //$rootScope.setTabs('login');
             $state.go('login');
         }
     });

@@ -4,10 +4,8 @@ app.controller(
         $scope.login = function () {
             $rootScope.authenticate($scope.credentials, function(){
                 if (!$rootScope.authenticated){
-                    //$rootScope.setTabs('login');
                     $state.go('login');
                 } else {
-                    //$rootScope.setTabs('phonebook');
                     $state.go('phonebook');
                 }
             });
