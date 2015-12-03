@@ -1,8 +1,10 @@
-form(role='form', ng-submit='login()')
-   h2.form-signin-heading Авторизация
-   label.sr-only(for='username') Логин
-   input#username.form-control(type='text', name='username', placeholder='Логин', ng-model="credentials.username")
-   label.sr-only(for='password') Пароль
-   input#password.form-control(type='password', name='password', placeholder='Пароль', ng-model="credentials.password")
-   button.btn.btn-lg.btn-primary.btn-block(type='submit') Войти
+include ../mixins/col
++col(6)
+   form(role='form', ng-submit='login()')
+      h2.form-signin-heading Авторизация
+      label.sr-only(for='username') Логин
+      input#username.form-control(type='text', name='username', placeholder='Логин', ng-model="credentials.username")
+      label.sr-only(for='password') Пароль
+      input#password.form-control(type='password', name='password', placeholder='Пароль', ng-model="credentials.password")
+      button.btn.btn-lg.btn-primary.btn-block(type='submit') Войти
 

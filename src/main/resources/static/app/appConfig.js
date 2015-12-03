@@ -1,34 +1,115 @@
-var app = angular.module('app', ['ngRoute', 'ui.bootstrap']);
-app.config(function ($routeProvider, $httpProvider) {
+var app = angular.module('app', ['ui.router', 'ui.bootstrap']);
+app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
-    $routeProvider.when('/', {
-        templateUrl: 'home.html',
-        controller: 'pbCtrl'
-    }).when('/log_in', {
-        templateUrl: 'log_in.html',
-        controller: 'loginCtrl'
-    }).when('/register', {
-        templateUrl: 'register.html',
-        controller: 'regCtrl'
-    }).otherwise('/');
+    $stateProvider
+        .state('home', {
+            url: '/',
+            templateUrl: "home.html"
+        })
+        .state('phonebook', {
+            url: '/phonebook',
+            templateUrl: "phonebook.html"
+        })
+        .state('login', {
+            url: '/login',
+            templateUrl: "log_in.html",
+            controller: 'loginCtrl'
+        })
+        .state('register', {
+            url: '/register',
+            templateUrl: "register.html",
+            controller: 'regCtrl'
+        })
+        .state('logout', {
+            url: '/logout',
+            template: '<h1>Вы вышли</h1>',
+            controller: 'logoutCtrl'
+        });
+    $urlRouterProvider.otherwise('/');
 
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 });
 
-app.controller('mainCtrl', function($rootScope, $location, $http){
-    $rootScope.tabClick = function(path){
-        $location.path(path);
-    };
-    $location.path("/");
-    $rootScope.logout = function () {
-        $http.post('logout', '').success(function () {
-            $rootScope.authenticated = false;
-            $location.path("/");
+app.controller('mainCtrl', function($rootScope, $scope, $http, $state){
+    $rootScope.$on("$stateChangeSuccess", function () {
+        $rootScope.setTabs($state.$current.name);
+    });
 
-        }).error(function () {
-            console.log("Logout failed")
-            $rootScope.authenticated = false;
+    $rootScope.getTabVisibility = function(tabRoute){
+        return {
+            'home' : 1,
+            'phonebook' : $rootScope.authenticated,
+            'login' : !$rootScope.authenticated,
+            'register' : !$rootScope.authenticated,
+            'logout' : $rootScope.authenticated
+        }[tabRoute];
+    };
+
+    $rootScope.setTabs = function(stateName){
+        $scope.tabs.forEach(function (tab) {
+            tab.visible = $rootScope.getTabVisibility(tab.route);
+            tab.active = tab.route === stateName;
         });
     };
+
+    $scope.tabs = [
+        { title: "Начальная страница", route: "home", active: true, visible: true},
+        { title: "Телефонная книга", route: "phonebook", active: false, visible: false},
+        { title: "Войти", route: "login", active: false, visible: true},
+        { title: "Регистрация", route: "register", active: false, visible: true},
+        { title: "Выход", route: "logout", active: false, visible: false}
+    ];
+
+    $rootScope.setTabs('home');
+
+    $rootScope.logout = function (callBack) {
+        $http.post('logout', '').success(function () {
+            console.log("Logout succeeded");
+            $rootScope.authenticated = false;
+            callBack && callBack();
+        }).error(function () {
+            console.log("Logout failed");
+            $rootScope.authenticated = false;
+            callBack && callBack();
+            $state.go('login');
+        });
+    };
+
+    $rootScope.authenticate = function (credentials, callback) {
+        var headers = credentials ? {
+            authorization: "Basic "
+            + btoa(credentials.username + ":"
+                + credentials.password)
+        } : {};
+
+        $http.get('user', {
+            headers: headers
+        }).success(function (data) {
+            debugger;
+            if (data.name) {
+                $rootScope.authenticated = true;
+                console.log("Login succeeded");
+            } else {
+                console.log("Login failed");
+                $rootScope.authenticated = false;
+            }
+            callback && callback();
+        }).error(function () {
+            debugger;
+            console.log("Login failed");
+            $rootScope.authenticated = false;
+            callback && callback();
+        });
+    };
+    $rootScope.authenticate();
+});
+
+app.controller('logoutCtrl', function($rootScope, $scope, $http, $state){
+    $rootScope.logout(function(){
+        if (!$rootScope.authenticated){
+            //$rootScope.setTabs('login');
+            $state.go('login');
+        }
+    });
 });

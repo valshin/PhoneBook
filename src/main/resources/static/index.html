@@ -5,7 +5,7 @@
     <link href="components/bootstrap/dist/css/bootstrap.css" rel="styleSheet"/>
     <script src="components/angular/angular.js"></script>
     <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="components/angular-route/angular-route.js"></script>
+    <script src="components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="components/angular-cookies/angular-cookies.js"></script>
     <script src="app/appConfig.js"></script>
     <script src="app/pbCtrl.js"></script>
@@ -19,14 +19,11 @@
   </head>
   <body ng-app="app" ng-cloak="" class="ng-cloak">
     <div ng-controller="mainCtrl" class="container">
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+      <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
         <uib-tabset>
-          <uib-tab heading="Телефонная книга" select="tabClick('/')" avtive="currentPath === '/'"></uib-tab>
-          <uib-tab heading="Войти" ng-show="!authenticated" select="tabClick('/log_in')" avtive="currentPath === '/log_in'"></uib-tab>
-          <uib-tab heading="Регистрация" ng-show="!authenticated" select="tabClick('/register')" avtive="currentPath === '/register'"></uib-tab>
-          <uib-tab heading="Выход" ng-show="authenticated" select="logout()"></uib-tab>
+          <uib-tab ng-repeat="tab in tabs" heading="{{tab.title}}" ui-sref="{{tab.route}}" active="tab.active" disable="tab.disabled" select="tabClick()" ng-show="tab.visible"></uib-tab>
         </uib-tabset>
-        <div ng-view="" class="container"></div>
+        <div ui-view></div>
       </div>
     </div>
   </body>
