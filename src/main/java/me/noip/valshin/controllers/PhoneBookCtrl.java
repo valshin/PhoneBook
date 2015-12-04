@@ -1,11 +1,10 @@
 package me.noip.valshin.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
@@ -14,7 +13,7 @@ import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.data.Validator;
 import me.noip.valshin.tools.json.JsonHelper;
 
-@Controller
+@RestController
 @RequestMapping(Sources.PHONEBOOK_PATH)
 public class PhoneBookCtrl {
 	@Autowired
@@ -50,7 +49,7 @@ public class PhoneBookCtrl {
 	};
 	
 	@RequestMapping(value = "add")
-	public @ResponseBody String add(@RequestBody Note note) {
+	public String add(@RequestBody Note note) {
 		String error = checkNote(note);
 		if (error != null){
 			return error;
@@ -64,7 +63,7 @@ public class PhoneBookCtrl {
 	}
 	
 	@RequestMapping(value = "update")
-	public @ResponseBody String update(@RequestBody Note note) {
+	public String update(@RequestBody Note note) {
 		String error = checkNote(note);
 		if (error != null){
 			return error;
@@ -77,8 +76,27 @@ public class PhoneBookCtrl {
 		}
 	}
 	
+	@RequestMapping(value = "save")
+	public String save(@RequestBody Note note) {
+		String error = checkNote(note);
+		if (error != null){
+			return error;
+		}
+		try {
+			db.addNote(note);
+			return jsonHelper.okAnswer();
+		} catch (RamDbException e1) {
+			try {
+				db.updateNote(note);
+				return jsonHelper.okAnswer();
+			} catch (RamDbException e2) {
+				return jsonHelper.errorAnswer(e1.getMessage() + "\n" + e2.getMessage());
+			}
+		}
+	}
+	
 	@RequestMapping(value = "delete")
-	public @ResponseBody String delete(@RequestBody Note note) {
+	public String delete(@RequestBody Note note) {
 		String error = checkNote(note);
 		if (error != null){
 			return jsonHelper.errorAnswer(error);
@@ -92,22 +110,22 @@ public class PhoneBookCtrl {
 	}
 	
 	@RequestMapping("get_by_name")
-	public @ResponseBody String getByName(@RequestParam String name) {
+	public String getByName(@RequestParam String name) {
 		return jsonHelper.jsonAnswer(db.getByName(name));
 	}
 	
 	@RequestMapping("get_by_lastname")
-	public @ResponseBody String getByLastName(@RequestParam String lastName) {
+	public String getByLastName(@RequestParam String lastName) {
 		return jsonHelper.jsonAnswer(db.getByLastName(lastName));
 	}
 	
 	@RequestMapping("get_by_phone")
-	public @ResponseBody String getByPhone(@RequestParam String phone) {
+	public String getByPhone(@RequestParam String phone) {
 		return jsonHelper.jsonAnswer(db.getByPhone(phone));
 	}
 	
 	@RequestMapping("get_all")
-	public @ResponseBody String getAll() {
+	public String getAll() {
 		return jsonHelper.jsonAnswer(db.getNotesData());
 	}
 }

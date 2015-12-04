@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import me.noip.valshin.db.entities.Note;
@@ -12,6 +13,7 @@ import me.noip.valshin.exceptions.CoreException;
 import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.io.services.JsonRW;
 public class FileDB extends RamDB{
+	protected Logger logger = Logger.getLogger(FileDB.class.getName());
 	@Autowired
 	private JsonRW io;
 	@PostConstruct
@@ -19,7 +21,6 @@ public class FileDB extends RamDB{
 		storage = io.readData();
 		super.init();
 	}
-	
 	
 	private void write() throws IOException {
 		io.writeData(storage);
@@ -41,6 +42,18 @@ public class FileDB extends RamDB{
 	public void updateNote(Note note) throws RamDbException {
 		try {
 			super.updateNote(note);
+			write();
+		} catch (RamDbException e){
+			throw e;
+		} catch (IOException e){
+			throw new CoreException("Read/Write Error");
+		}
+	}
+	
+	@Override
+	public void saveNote(Note note) throws RamDbException {
+		try {
+			super.saveNote(note);
 			write();
 		} catch (RamDbException e){
 			throw e;

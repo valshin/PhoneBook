@@ -1,1 +1,61 @@
-h3 Список записей
+h4 Список контактов
+div(ng-app='app', ng-controller='pbCtrl')
+    table.table.table-bordered.table-hover.table-condensed
+        tr(style='font-weight: bold')
+            td(style='width:10%') Имя
+            td(style='width:15%') Отчество
+            td(style='width:10%') Фамилия
+            td(style='width:10%') Моб. Телефон
+            td(style='width:15%') Дом.телефон
+            td(style='width:15%') Адрес
+            td(style='width:10%') Email
+            td(style='width:15%')
+        tr(ng-repeat='note in notes')
+            td
+                span(editable-text='note.data.name', e-name='name', e-form='rowform', onbeforesave='checkName($data, note.id)', e-required='')
+                    | {{ note.data.name || 'empty' }}
+            td
+                span(editable-text='note.data.secondName', e-name='secondName', e-form='rowform')
+                    | {{ note.data.secondName }}
+            td
+                span(editable-text='note.data.lastName', e-name='lastName', e-form='rowform')
+                    | {{ note.data.lastName }}
+            td
+                span(editable-text='note.data.phone', e-name='phone', e-form='rowform')
+                    | {{ note.data.phone }}
+            td
+                span(editable-text='note.data.workPhone', e-name='workPhone', e-form='rowform')
+                    | {{ note.data.workPhone }}
+            td
+                span(editable-text='note.data.address', e-name='address', e-form='rowform')
+                    | {{ note.data.address }}
+            td
+                span(editable-text='note.data.email', e-name='email', e-form='rowform')
+                    | {{ note.data.email }}
+            td(style='white-space: nowrap')
+                form.form-buttons.form-inline(editable-form='', name='rowform', onbeforesave='saveUser($data, note.id)', ng-show='rowform.$visible', shown='inserted == note')
+                    button.btn.btn-primary(type='submit', ng-disabled='rowform.$waiting')
+                        | Сохранить
+                    button.btn.btn-default(type='button', ng-disabled='rowform.$waiting', ng-click='rowform.$cancel()')
+                        | Отмена
+                .buttons(ng-show='!rowform.$visible')
+                    button.btn.btn-primary(ng-click='rowform.$show()') Изменить
+                    button.btn.btn-danger(ng-click='removeNote($index)') Удалить
+    button.btn.btn-default(ng-click='addUser()') Добавить
+
+//.container
+//    .row
+//        #filter-panel.collapse.filter-panel
+//            .panel.panel-default
+//                .panel-body
+//                    form.form-inline
+//                        .form-group
+//                            label.filter-col(style='margin-right:0;', for='pref-perpage') Искать по:
+//                            select#pref-perpage.form-control
+//                                option(ng-repeat='condition in searchConditions', value='{{condition.id}}') {{condition.value}}
+//                        button.btn.btn-default.filter-col(type='submit') Искать
+//        button.btn.btn-primary(type='button', data-toggle='collapse', data-target='#filter-panel')
+//            span.glyphicon.glyphicon-cog Поиск
+//
+//        button.btn.btn-default(ng-click='getAll()') Показать все записи
+//        h4 Список:

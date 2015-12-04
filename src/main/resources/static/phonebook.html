@@ -1,2 +1,52 @@
 
-<h3>Список записей</h3>
+<h4>Список контактов</h4>
+<div ng-app="app" ng-controller="pbCtrl">
+  <table class="table table-bordered table-hover table-condensed">
+    <tr style="font-weight: bold">
+      <td style="width:10%">Имя</td>
+      <td style="width:15%">Отчество</td>
+      <td style="width:10%">Фамилия</td>
+      <td style="width:10%">Моб. Телефон</td>
+      <td style="width:15%">Дом.телефон</td>
+      <td style="width:15%">Адрес</td>
+      <td style="width:10%">Email</td>
+      <td style="width:15%"></td>
+    </tr>
+    <tr ng-repeat="note in notes">
+      <td><span editable-text="note.data.name" e-name="name" e-form="rowform" onbeforesave="checkName($data, note.id)" e-required="">{{ note.data.name || 'empty' }}</span></td>
+      <td><span editable-text="note.data.secondName" e-name="secondName" e-form="rowform">{{ note.data.secondName }}</span></td>
+      <td><span editable-text="note.data.lastName" e-name="lastName" e-form="rowform">{{ note.data.lastName }}</span></td>
+      <td><span editable-text="note.data.phone" e-name="phone" e-form="rowform">{{ note.data.phone }}</span></td>
+      <td><span editable-text="note.data.workPhone" e-name="workPhone" e-form="rowform">{{ note.data.workPhone }}</span></td>
+      <td><span editable-text="note.data.address" e-name="address" e-form="rowform">{{ note.data.address }}</span></td>
+      <td><span editable-text="note.data.email" e-name="email" e-form="rowform">{{ note.data.email }}</span></td>
+      <td style="white-space: nowrap">
+        <form editable-form="" name="rowform" onbeforesave="saveUser($data, note.id)" ng-show="rowform.$visible" shown="inserted == note" class="form-buttons form-inline">
+          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">Сохранить</button>
+          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">Отмена</button>
+        </form>
+        <div ng-show="!rowform.$visible" class="buttons">
+          <button ng-click="rowform.$show()" class="btn btn-primary">Изменить</button>
+          <button ng-click="removeNote($index)" class="btn btn-danger">Удалить</button>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <button ng-click="addUser()" class="btn btn-default">Добавить</button>
+</div>
+<!--.container-->
+<!--    .row-->
+<!--        #filter-panel.collapse.filter-panel-->
+<!--            .panel.panel-default-->
+<!--                .panel-body-->
+<!--                    form.form-inline-->
+<!--                        .form-group-->
+<!--                            label.filter-col(style='margin-right:0;', for='pref-perpage') Искать по:-->
+<!--                            select#pref-perpage.form-control-->
+<!--                                option(ng-repeat='condition in searchConditions', value='{{condition.id}}') {{condition.value}}-->
+<!--                        button.btn.btn-default.filter-col(type='submit') Искать-->
+<!--        button.btn.btn-primary(type='button', data-toggle='collapse', data-target='#filter-panel')-->
+<!--            span.glyphicon.glyphicon-cog Поиск-->
+<!---->
+<!--        button.btn.btn-default(ng-click='getAll()') Показать все записи-->
+<!--        h4 Список:-->

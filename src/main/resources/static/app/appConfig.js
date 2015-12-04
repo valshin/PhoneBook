@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router', 'ui.bootstrap']);
+var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'xeditable']);
 app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
     $stateProvider
@@ -8,7 +8,8 @@ app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('phonebook', {
             url: '/phonebook',
-            templateUrl: "phonebook.html"
+            templateUrl: "phonebook.html",
+            controller: 'pbCtrl'
         })
         .state('login', {
             url: '/login',
