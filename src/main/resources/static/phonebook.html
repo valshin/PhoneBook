@@ -1,6 +1,7 @@
 
 <h4>Список контактов</h4>
 <div ng-app="app" ng-controller="pbCtrl">
+  <button ng-click="getAll()" class="btn btn-default">Показать все записи</button>
   <table class="table table-bordered table-hover table-condensed">
     <tr style="font-weight: bold">
       <td style="width:10%">Имя</td>
@@ -17,11 +18,11 @@
       <td><span editable-text="note.data.secondName" e-name="secondName" e-form="rowform">{{ note.data.secondName }}</span></td>
       <td><span editable-text="note.data.lastName" e-name="lastName" e-form="rowform">{{ note.data.lastName }}</span></td>
       <td><span editable-text="note.data.phone" e-name="phone" e-form="rowform">{{ note.data.phone }}</span></td>
-      <td><span editable-text="note.data.workPhone" e-name="workPhone" e-form="rowform">{{ note.data.workPhone }}</span></td>
+      <td><span editable-text="note.data.homePhone" e-name="homePhone" e-form="rowform">{{ note.data.homePhone }}</span></td>
       <td><span editable-text="note.data.address" e-name="address" e-form="rowform">{{ note.data.address }}</span></td>
       <td><span editable-text="note.data.email" e-name="email" e-form="rowform">{{ note.data.email }}</span></td>
       <td style="white-space: nowrap">
-        <form editable-form="" name="rowform" onbeforesave="saveUser($data, note.id)" ng-show="rowform.$visible" shown="inserted == note" class="form-buttons form-inline">
+        <form editable-form="" name="rowform" onbeforesave="saveNote($data, note.id)" ng-show="rowform.$visible" shown="inserted == note" class="form-buttons form-inline">
           <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">Сохранить</button>
           <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">Отмена</button>
         </form>
@@ -32,7 +33,7 @@
       </td>
     </tr>
   </table>
-  <button ng-click="addUser()" class="btn btn-default">Добавить</button>
+  <button ng-click="addNote()" class="btn btn-default">Добавить</button>
 </div>
 <!--.container-->
 <!--    .row-->

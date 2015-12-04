@@ -6,20 +6,25 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.RamStorage;
 import me.noip.valshin.db.entities.User;
 import me.noip.valshin.exceptions.RamDbException;
+import me.noip.valshin.security.ActiveUserAccessor;
 
 public class RamDB implements Db {
 	protected Logger logger = Logger.getLogger(RamDB.class.getName());
 	protected RamStorage storage;
 	protected Map<String, Note> notes;
 	protected Map<String, User> users;
+	
+	@Autowired
+    ActiveUserAccessor activeUserAccessor;
 
 	public RamDB() {
 		storage = new RamStorage();
@@ -32,8 +37,10 @@ public class RamDB implements Db {
 	}
 
 	public String getOwner() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return userDetails.getUsername() + userDetails.getPassword();
+		User activeUser = activeUserAccessor.getActiveUser();
+		String owner = activeUser.getLogin();
+		logger.info("owner : " + owner);
+		return owner;
 	}
 
 	private String getNoteKey(Note note) {

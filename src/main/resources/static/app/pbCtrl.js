@@ -13,12 +13,12 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         {
             id: 1,
             data: {
-                name: 'Изя',
-                secondName: 'Матвеевич',
-                lastName: 'Франкенштейн',
-                phone: '0889876543',
-                workPhone: '0220980706',
-                address: 'Изя',
+                name: 'Валерий',
+                secondName: 'Викторович',
+                lastName: 'Шинкаренко',
+                phone: '0509426859',
+                homePhone: '0501234567',
+                address: 'Леся Курбаса, 18г',
                 email: 'izy@kk.uu'
             }
         }
@@ -26,6 +26,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
 
     $scope.getAll = function(callback) {
         $http.get('/phonebook/get_all').success(function(data) {
+            debugger;
             $scope.notes = data;
             callback && callback();
         });
@@ -62,7 +63,12 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
     };
 
     $scope.saveNote = function(data, id) {
-
+        debugger;
+        $http.post('/phonebook/save', data).success(function(data) {
+            debugger;
+        }).error(function(data){
+            debugger;
+        });
     };
 
     $scope.checkName = function(data, id) {
@@ -73,7 +79,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         $scope.notes.splice(index, 1);
     };
 
-    $scope.addUser = function() {
+    $scope.addNote = function() {
         $scope.inserted = {
             id: $scope.notes.length+1,
             data: {
@@ -81,7 +87,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
                 secondName: '',
                 lastName: '',
                 phone: '',
-                workPhone: '',
+                homePhone: '',
                 address: '',
                 email: ''
             }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
+import me.noip.valshin.exceptions.RamDbException;
 public class MySqlDB implements Db{
 
 	@Override
@@ -57,6 +58,18 @@ public class MySqlDB implements Db{
 	public User getUser(String login, String password) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getOwner() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void saveNote(Note note) throws RamDbException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

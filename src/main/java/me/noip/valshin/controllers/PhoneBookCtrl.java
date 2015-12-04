@@ -1,8 +1,10 @@
 package me.noip.valshin.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +18,7 @@ import me.noip.valshin.tools.json.JsonHelper;
 @RestController
 @RequestMapping(Sources.PHONEBOOK_PATH)
 public class PhoneBookCtrl {
+	protected Logger logger = Logger.getLogger(PhoneBookCtrl.class.getName());
 	@Autowired
 	Db db;
 	@Autowired
@@ -39,7 +42,7 @@ public class PhoneBookCtrl {
 		if (!validator.checkPhone(note.getHomePhone())){
 			return jsonHelper.errorAnswer("HomePhoneError");
 		};
-		if (!validator.checkAdress(note.getAdress())){
+		if (!validator.checkAdress(note.getAddress())){
 			return jsonHelper.errorAnswer("AdressError");
 		};
 		if (!validator.checkEmail(note.getEmail())){
@@ -76,7 +79,7 @@ public class PhoneBookCtrl {
 		}
 	}
 	
-	@RequestMapping(value = "save")
+	@RequestMapping(value = "save" , method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
 	public String save(@RequestBody Note note) {
 		String error = checkNote(note);
 		if (error != null){

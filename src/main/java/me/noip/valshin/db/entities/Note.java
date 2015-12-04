@@ -6,7 +6,7 @@ public class Note {
 	private String lastName;
 	private String homePhone;
 	private String phone;
-	private String adress;
+	private String address;
 	private String email;
 	private String owner;
 	
@@ -40,11 +40,11 @@ public class Note {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAdress(String address) {
+		this.address = address;
 	}
 	public String getEmail() {
 		return email;
@@ -65,7 +65,7 @@ public class Note {
 				getLastName().equals(note.getLastName()) &&
 				getPhone().equals(note.getPhone()) &&
 				(getHomePhone() == note.getHomePhone() || getHomePhone().equals(note.getHomePhone())) &&
-				(getAdress() == note.getAdress() || getAdress().equals(note.getAdress())) &&
+				(getAddress() == note.getAddress() || getAddress().equals(note.getAddress())) &&
 				(getEmail() == note.getEmail() || getEmail().equals(note.getEmail())) &&
 				getOwner().equals(note.getOwner());
 	}
@@ -77,9 +77,19 @@ public class Note {
 		newNote.setLastName(note.getLastName());
 		newNote.setPhone(note.getPhone());
 		newNote.setHomePhone(note.getHomePhone());
-		newNote.setAdress(note.getAdress());
+		newNote.setAdress(note.getAddress());
 		newNote.setEmail(note.getEmail());
 		return 	newNote;
+	}
+	
+	public String toString(){
+		return "\nName: " + getName() + 
+				"\nSecondName: " + getSecondName() + 
+				"\nLastName: " + getLastName() +
+				"\nPhone: " + getPhone() +
+				"\nHomePhone: " + getHomePhone() +
+				"\nAddress: " + getAddress() +
+				"\nEmail: " + getEmail();
 	}
 }
 
