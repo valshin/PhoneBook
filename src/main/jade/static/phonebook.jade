@@ -3,9 +3,9 @@ div(ng-app='app', ng-controller='pbCtrl')
     button.btn.btn-default(ng-click='getAll()') Показать все записи
     table.table.table-bordered.table-hover.table-condensed
         tr(style='font-weight: bold')
+            td(style='width:10%') Фамилия
             td(style='width:10%') Имя
             td(style='width:10%') Отчество
-            td(style='width:10%') Фамилия
             td(style='width:10%') Моб. Телефон
             td(style='width:10%') Дом.телефон
             td(style='width:30%') Адрес
@@ -42,7 +42,7 @@ div(ng-app='app', ng-controller='pbCtrl')
                 .buttons(ng-show='!rowform.$visible')
                     button.btn.btn-primary(ng-click='rowform.$show()') Изменить
                     button.btn.btn-danger(ng-click='removeNote($index)') Удалить
-    button.btn.btn-default(ng-click='addNote()') Добавить
+    button.btn.btn-default(ng-click='addLocalNote()') Добавить
 
 //.container
 //    .row

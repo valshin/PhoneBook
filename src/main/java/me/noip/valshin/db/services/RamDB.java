@@ -68,7 +68,7 @@ public class RamDB implements Db {
 		Map<String, Note> out = new HashMap<String, Note>();
 		for (Entry<String, Note> entry : storage.getUserNotes(getOwner()).entrySet()) {
 			Note note = entry.getValue();
-			if (note.getOwner().equals(getOwner()) && note.getName().equals(name)) {
+			if (note.getName().equals(name)) {
 				out.put(entry.getKey(), note.clone());
 			}
 		}
@@ -80,7 +80,7 @@ public class RamDB implements Db {
 		Map<String, Note> out = new HashMap<String, Note>();
 		for (Entry<String, Note> entry : storage.getUserNotes(getOwner()).entrySet()) {
 			Note note = entry.getValue();
-			if (note.getOwner().equals(getOwner()) && note.getLastName().equals(lastName)) {
+			if (note.getLastName().equals(lastName)) {
 				out.put(entry.getKey(), note.clone());
 			}
 		}
@@ -92,8 +92,7 @@ public class RamDB implements Db {
 		Map<String, Note> out = new HashMap<String, Note>();
 		for (Entry<String, Note> entry : storage.getUserNotes(getOwner()).entrySet()) {
 			Note note = entry.getValue();
-			if (note.getOwner().equals(getOwner())
-					&& (note.getPhone().equals(phone) || note.getHomePhone().equals(phone))) {
+			if (note.getPhone().equals(phone) || note.getHomePhone().equals(phone)) {
 				out.put(entry.getKey(), note.clone());
 			}
 		}

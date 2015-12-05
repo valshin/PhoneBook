@@ -67,7 +67,12 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
 
     $scope.saveNote = function(data) {
         debugger;
-        $http.post('/phonebook/save', data).success(function(data) {
+        $scope.addNote(data);
+    };
+
+    $scope.addNote = function(data) {
+        debugger;
+        $http.post('/phonebook/add', data).success(function(data) {
             debugger;
 
         }).error(function(data){
@@ -75,11 +80,21 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         });
     };
 
+    $scope.updateNote = function(data, id) {
+        //debugger;
+        //$http.post('/phonebook/update', data).success(function(data) {
+        //    debugger;
+        //
+        //}).error(function(data){
+        //    debugger;
+        //});
+    };
+
     $scope.removeNote = function(index) {
         $scope.notes.splice(index, 1);
     };
 
-    $scope.addNote = function() {
+    $scope.addLocalNote = function() {
         $scope.inserted = {
             id: $scope.notes.length+1,
             data: {
@@ -121,7 +136,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
     $scope.checkEmail = function(data) {
         if (!data) return;
         var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        if (!(re.test(email))){
+        if (!(re.test(data))){
             return "Неверный формат e-mail";
         }
     }

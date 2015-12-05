@@ -8,7 +8,6 @@ public class Note {
 	private String phone;
 	private String address;
 	private String email;
-	private String owner;
 	
 	public String getName() {
 		return name;
@@ -52,12 +51,6 @@ public class Note {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getOwner() {
-		return owner;
-	}
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
 	
 	public boolean isEqual(Note note){
 		return 	getName().equals(note.getName()) && 
@@ -66,8 +59,7 @@ public class Note {
 				getPhone().equals(note.getPhone()) &&
 				(getHomePhone() == note.getHomePhone() || getHomePhone().equals(note.getHomePhone())) &&
 				(getAddress() == note.getAddress() || getAddress().equals(note.getAddress())) &&
-				(getEmail() == note.getEmail() || getEmail().equals(note.getEmail())) &&
-				getOwner().equals(note.getOwner());
+				(getEmail() == note.getEmail() || getEmail().equals(note.getEmail()));
 	}
 	
 	public Note clone(){
@@ -79,7 +71,6 @@ public class Note {
 		newNote.setHomePhone(getHomePhone());
 		newNote.setAdress(getAddress());
 		newNote.setEmail(getEmail());
-		newNote.setOwner(getOwner());
 		return 	newNote;
 	}
 	
@@ -91,8 +82,7 @@ public class Note {
 				"\nPhone: " + getPhone() +
 				"\nHomePhone: " + getHomePhone() +
 				"\nAddress: " + getAddress() +
-				"\nEmail: " + getEmail() +
-				"\nOwner: " + getOwner();
+				"\nEmail: " + getEmail();
 	}
 }
 
