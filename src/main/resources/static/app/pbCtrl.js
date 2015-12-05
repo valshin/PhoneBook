@@ -12,19 +12,19 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
     $scope.notes = [];
     $scope.setNotes = function(data){
         $scope.notes = [];
-        if (!(data.data && data.data instanceof Array)){
+        if (!(data.data)){
             return;
         }
         var notes = data.data;
-        notes.sort(function(a, b){
-            return (a.lastName || '' + a.name || '' + a.secondName || '').localeCompare(b.lastName || '' + b.name || '' + b.secondName || '');
-        });
         for (var i in notes){
             $scope.notes[i] = {
                 id: i,
                 data: notes[i]
             }
         }
+        $scope.notes.sort(function(a, b){
+            return (a.lastName || '' + a.name || '' + a.secondName || '').localeCompare(b.lastName || '' + b.name || '' + b.secondName || '');
+        });
     };
 
     $scope.getAll = function(callback) {
