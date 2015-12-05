@@ -6,7 +6,7 @@ public class ValidatorConstants {
 	public static final int MIN_NAME_LENGTH = 4;
 	public static final int MIN_SECOND_NAME_LENGTH = 4;
 	public static final int MIN_LAST_NAME_LENGTH = 4;
-	public static final String PHONE_PATTERN = "\\d{10}";
+	public static final String PHONE_PATTERN = "\\+380\\(\\d{2}\\)\\d{7}";
 	public static final String EMAIL_PATTERN = 
 			"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 //	Users

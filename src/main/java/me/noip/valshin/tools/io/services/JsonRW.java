@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import me.noip.valshin.config.Config;
-import me.noip.valshin.db.entities.RamStorage;
+import me.noip.valshin.db.entities.MapStorage;
 import me.noip.valshin.tools.FileTools;
 import me.noip.valshin.tools.io.DataRW;
 
@@ -22,18 +22,18 @@ public class JsonRW implements DataRW {
 	Config config; 
 	
 	@Override
-	public RamStorage readData() throws IOException {
-		RamStorage data = null;
+	public MapStorage readData() throws IOException {
+		MapStorage data = null;
 		FileInputStream fis = null;
 		if (!FileTools.exists(config.getFileDbPath())){
-			RamStorage storage = new RamStorage();
+			MapStorage storage = new MapStorage();
 			storage.init();
 			return storage;
 		} else {
 			try {
 				fis = new FileInputStream(config.getFileDbPath());
 		        try {
-		        	data = mapper.readValue(fis, RamStorage.class);
+		        	data = mapper.readValue(fis, MapStorage.class);
 		        } finally {
 		        	fis.close();
 		        }
@@ -46,7 +46,7 @@ public class JsonRW implements DataRW {
 	}
 
 	@Override
-	public void writeData(RamStorage storage) throws IOException {
+	public void writeData(MapStorage storage) throws IOException {
 		FileOutputStream fos = null;
 		try {
 			System.out.println(config.getFileDbPath());

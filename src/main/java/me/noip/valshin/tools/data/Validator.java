@@ -6,7 +6,7 @@ public interface Validator {
 	public boolean checkPassword(String password);
 	public boolean checkFio(String fio);
 //	Notes
-	public boolean checkName(String phone);
+	public boolean checkName(String name);
 	public boolean checkSecondName(String secondName);
 	public boolean checkLastName(String lastName);
 	public boolean checkPhone(String phone);

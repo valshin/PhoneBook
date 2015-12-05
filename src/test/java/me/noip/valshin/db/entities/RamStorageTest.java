@@ -12,7 +12,7 @@ public class RamStorageTest {
 	
 	@Test
 	public void testGettersAndSetters(){
-		RamStorage storage = new RamStorage();
+		MapStorage storage = new MapStorage();
 		Map<String, Note> notes = new HashMap<>();
 		Map<String, User> users = new HashMap<>();
 		for (int i = 0; i < 9; i++){

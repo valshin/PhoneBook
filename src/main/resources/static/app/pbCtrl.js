@@ -9,25 +9,28 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         {id: 'phone', title: 'Номеру телефона'}
     ];
 
-    $scope.notes = [
-        {
-            id: 1,
-            data: {
-                name: 'Валерий',
-                secondName: 'Викторович',
-                lastName: 'Шинкаренко',
-                phone: '0509426859',
-                homePhone: '0501234567',
-                address: 'Леся Курбаса, 18г',
-                email: 'izy@kk.uu'
+    $scope.notes = [];
+    $scope.setNotes = function(data){
+        $scope.notes = [];
+        if (!(data.data && data.data instanceof Array)){
+            return;
+        }
+        var notes = data.data;
+        notes.sort(function(a, b){
+            return (a.lastName || '' + a.name || '' + a.secondName || '').localeCompare(b.lastName || '' + b.name || '' + b.secondName || '');
+        });
+        for (var i in notes){
+            $scope.notes[i] = {
+                id: i,
+                data: notes[i]
             }
         }
-    ];
+    };
 
     $scope.getAll = function(callback) {
         $http.get('/phonebook/get_all').success(function(data) {
             debugger;
-            $scope.notes = data;
+            $scope.setNotes(data);
             callback && callback();
         });
     };
@@ -37,7 +40,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
             '/phonebook/get_by_name',
             {params: {name: name}}
         ).success(function(data) {
-                $scope.notes = data;
+                $scope.setNotes(data);
                 callback && callback();
             });
     };
@@ -47,7 +50,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
             '/phonebook/get_by_lastname',
             {params: {lastName: lastName}}
         ).success(function(data) {
-                $scope.notes = data;
+                $scope.setNotes(data);
                 callback && callback();
             });
     };
@@ -57,22 +60,19 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
             '/phonebook/get_by_phone',
             {params: {phone: phone}}
         ).success(function(data) {
-                $scope.notes = data;
+                $scope.setNotes(data);
                 callback && callback();
             });
     };
 
-    $scope.saveNote = function(data, id) {
+    $scope.saveNote = function(data) {
         debugger;
         $http.post('/phonebook/save', data).success(function(data) {
             debugger;
+
         }).error(function(data){
             debugger;
         });
-    };
-
-    $scope.checkName = function(data, id) {
-
     };
 
     $scope.removeNote = function(index) {
@@ -86,7 +86,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
                 name: '',
                 secondName: '',
                 lastName: '',
-                phone: '',
+                phone: '+380(00)0000000',
                 homePhone: '',
                 address: '',
                 email: ''
@@ -95,4 +95,34 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         };
         $scope.notes.push($scope.inserted);
     };
+
+    $scope.checkName = function(data, nameType) {
+        if (data.length < 4) {
+            return nameType + ' содержит меньше 4 символов';
+        } else if (data.length > 200){
+            return nameType + ' содержит слишком много символов';
+        }
+    };
+
+    $scope.checkPhone = function(data, isRequired) {
+        if (!isRequired && data.length == 0) return;
+        if (!((/\+380\(\d{2}\)\d{7}/).test(data))){
+            return "Неверный формат номера";
+        }
+    };
+
+    $scope.checkAddress = function(data) {
+        if (!data) return;
+        if (data.length > 200){
+            return "Адрес слишклм длинный";
+        }
+    };
+
+    $scope.checkEmail = function(data) {
+        if (!data) return;
+        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        if (!(re.test(email))){
+            return "Неверный формат e-mail";
+        }
+    }
 });

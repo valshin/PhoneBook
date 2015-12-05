@@ -1,138 +1,100 @@
 package me.noip.valshin.db.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import me.noip.valshin.db.Db;
+import me.noip.valshin.db.entities.MapStorage;
 import me.noip.valshin.db.entities.Note;
-import me.noip.valshin.db.entities.RamStorage;
 import me.noip.valshin.db.entities.User;
 import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.security.ActiveUserAccessor;
 
 public class RamDB implements Db {
 	protected Logger logger = Logger.getLogger(RamDB.class.getName());
-	protected RamStorage storage;
-	protected Map<String, Note> notes;
-	protected Map<String, User> users;
+	protected MapStorage storage;
 	
 	@Autowired
     ActiveUserAccessor activeUserAccessor;
-
-	public RamDB() {
-		storage = new RamStorage();
-		init();
+	
+	public void init(){
+		storage = new MapStorage();
 	}
-
-	protected void init() {
-		users = storage.getUsers();
-		notes = storage.getNotes();
+	
+	public void init(MapStorage storage){
+		this.storage = storage;
 	}
 
 	public String getOwner() {
-		User activeUser = activeUserAccessor.getActiveUser();
-		String owner = activeUser.getLogin();
-		logger.info("owner : " + owner);
-		return owner;
+		return activeUserAccessor.getActiveUser().getLogin();
 	}
 
-	private String getNoteKey(Note note) {
-		return getOwner() + note.getName() + note.getSecondName() + note.getLastName();
+	private String getNextNoteKey() {
+		return Integer.toString(storage.getUserNotes(getOwner()).size());
 	}
 
 	@Override
-	public void addNote(Note note) throws RamDbException {
-		String key = getNoteKey(note);
-		if (notes.containsKey(key)) {
-			throw new RamDbException("Note with key '" + key + "' already exists");
+	public void addNote(Note note) {
+		storage.getUserNotes(getOwner()).put(getNextNoteKey(), note);
+	}
+
+	@Override
+	public void updateNote(Note note, String id) throws RamDbException {
+		if (!storage.getUserNotes(getOwner()).containsKey(id)) {
+			throw new RamDbException("No note with id '" + id + "'");
 		}
-		note.setOwner(getOwner());
-		notes.put(key, note);
+		storage.getUserNotes(getOwner()).put(id, note);
 	}
 
 	@Override
-	public void updateNote(Note note) throws RamDbException {
-		String key = getNoteKey(note);
-		if (!notes.containsKey(key)) {
-			throw new RamDbException("No note with key '" + key + "'");
+	public void deleteNote(String id) throws RamDbException {
+		if (!storage.getUserNotes(getOwner()).containsKey(id)) {
+			throw new RamDbException("No note with id '" + id + "'");
 		}
-		note.setOwner(getOwner());
-		notes.put(key, note);
+		storage.getUserNotes(getOwner()).remove(id);
 	}
 
 	@Override
-	public void saveNote(Note note) throws RamDbException {
-		try {
-			addNote(note);
-		} catch (RamDbException addEx) {
-			try {
-				updateNote(note);
-			} catch (RamDbException updEx) {
-				throw new RamDbException(addEx.getMessage() + updEx.getMessage());
-			}
-		}
+	public Map<String, Note> getNotesData() {
+		return new HashMap<String, Note>(storage.getUserNotes(getOwner()));
 	}
 
 	@Override
-	public void deleteNote(Note note) throws RamDbException {
-		String key = getNoteKey(note);
-		if (!notes.containsKey(key)) {
-			throw new RamDbException("No note with key '" + key + "'");
-		}
-		notes.remove(key);
-	}
-
-	@Override
-	public List<Note> getNotesData() {
-		List<Note> out = new ArrayList<>();
-		for (Entry<String, Note> entry : notes.entrySet()) {
-			Note note = entry.getValue();
-			if (note.getOwner().equals(getOwner())) {
-				out.add(note);
-			}
-		}
-		return out;
-	}
-
-	@Override
-	public List<Note> getByName(String name) {
-		List<Note> out = new ArrayList<>();
-		for (Entry<String, Note> entry : notes.entrySet()) {
+	public Map<String, Note> getByName(String name) {
+		Map<String, Note> out = new HashMap<String, Note>();
+		for (Entry<String, Note> entry : storage.getUserNotes(getOwner()).entrySet()) {
 			Note note = entry.getValue();
 			if (note.getOwner().equals(getOwner()) && note.getName().equals(name)) {
-				out.add(note);
+				out.put(entry.getKey(), note.clone());
 			}
 		}
 		return out;
 	}
 
 	@Override
-	public List<Note> getByLastName(String lastName) {
-		List<Note> out = new ArrayList<>();
-		for (Entry<String, Note> entry : notes.entrySet()) {
+	public Map<String, Note> getByLastName(String lastName) {
+		Map<String, Note> out = new HashMap<String, Note>();
+		for (Entry<String, Note> entry : storage.getUserNotes(getOwner()).entrySet()) {
 			Note note = entry.getValue();
 			if (note.getOwner().equals(getOwner()) && note.getLastName().equals(lastName)) {
-				out.add(note);
+				out.put(entry.getKey(), note.clone());
 			}
 		}
 		return out;
 	}
 
 	@Override
-	public List<Note> getByPhone(String phone) {
-		List<Note> out = new ArrayList<>();
-		for (Entry<String, Note> entry : notes.entrySet()) {
+	public Map<String, Note> getByPhone(String phone) {
+		Map<String, Note> out = new HashMap<String, Note>();
+		for (Entry<String, Note> entry : storage.getUserNotes(getOwner()).entrySet()) {
 			Note note = entry.getValue();
 			if (note.getOwner().equals(getOwner())
 					&& (note.getPhone().equals(phone) || note.getHomePhone().equals(phone))) {
-				out.add(note);
+				out.put(entry.getKey(), note.clone());
 			}
 		}
 		return out;
@@ -144,18 +106,18 @@ public class RamDB implements Db {
 
 	@Override
 	public void addUser(User user) throws RamDbException {
-		for (Entry<String, User> entry : users.entrySet()) {
+		for (Entry<String, User> entry : storage.getUsers().entrySet()) {
 			User u = entry.getValue();
 			if (user.getLogin().equals(u.getLogin())) {
 				throw new RamDbException("User with neame '" + user.getLogin() + "' already exist");
 			}
 		}
-		users.put(getUserKey(user), user);
+		storage.getUsers().put(getUserKey(user), user);
 	}
 
 	@Override
 	public User getUser(String login, String password) {
 		String key = login + password;
-		return users.get(key);
+		return storage.getUsers().get(key);
 	}
 }

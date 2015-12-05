@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import me.noip.valshin.MvcConfigTest;
-import me.noip.valshin.db.entities.RamStorage;
+import me.noip.valshin.db.entities.MapStorage;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MvcConfigTest.class)

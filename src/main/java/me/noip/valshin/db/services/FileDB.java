@@ -17,9 +17,8 @@ public class FileDB extends RamDB{
 	@Autowired
 	private JsonRW io;
 	@PostConstruct
-	public void initBean() throws IOException{
-		storage = io.readData();
-		super.init();
+	public void initStorage() throws IOException{
+		super.init(io.readData());
 	}
 	
 	private void write() throws IOException {
@@ -27,21 +26,19 @@ public class FileDB extends RamDB{
 	}
 	
 	@Override
-	public void addNote(Note note) throws RamDbException{
+	public void addNote(Note note){
 		try {
 			super.addNote(note);
 			write();
-		} catch (RamDbException e){
-			throw e;
 		} catch (IOException e){
 			throw new CoreException("Read/Write Error");
 		}
 	}
 	
 	@Override
-	public void updateNote(Note note) throws RamDbException {
+	public void updateNote(Note note, String id) throws RamDbException {
 		try {
-			super.updateNote(note);
+			super.updateNote(note, id);
 			write();
 		} catch (RamDbException e){
 			throw e;
@@ -51,21 +48,9 @@ public class FileDB extends RamDB{
 	}
 	
 	@Override
-	public void saveNote(Note note) throws RamDbException {
+	public void deleteNote(String id) throws RamDbException {
 		try {
-			super.saveNote(note);
-			write();
-		} catch (RamDbException e){
-			throw e;
-		} catch (IOException e){
-			throw new CoreException("Read/Write Error");
-		}
-	}
-	
-	@Override
-	public void deleteNote(Note note) throws RamDbException {
-		try {
-			super.deleteNote(note);
+			super.deleteNote(id);
 			write();
 		} catch (RamDbException e){
 			throw e;

@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import me.noip.valshin.config.Config;
 import me.noip.valshin.db.entities.Note;
-import me.noip.valshin.db.entities.RamStorage;
+import me.noip.valshin.db.entities.MapStorage;
 import me.noip.valshin.db.entities.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -66,7 +66,7 @@ public class JsonRWIntegrationTest {
 	
 	@Test
 	public void testRW(){
-		RamStorage storageOut = new RamStorage();
+		MapStorage storageOut = new MapStorage();
 		Map<String, Note> notes = new HashMap<>();
 		Map<String, User> users = new HashMap<>();
 		for (int i = 0; i < 10; i++){
@@ -80,7 +80,7 @@ public class JsonRWIntegrationTest {
 		
 		try {
 			jsonRw.writeData(storageOut);
-			RamStorage storageIn = jsonRw.readData();
+			MapStorage storageIn = jsonRw.readData();
 			assertTrue(storageOut.isEqual(storageIn));
 		} catch (IOException e) {
 			throw new RuntimeException("Sumthng wrong!!!");

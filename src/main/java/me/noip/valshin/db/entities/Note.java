@@ -70,18 +70,20 @@ public class Note {
 				getOwner().equals(note.getOwner());
 	}
 	
-	public Note clone(Note note){
+	public Note clone(){
 		Note newNote = new Note();
-		newNote.setName(note.getName());
-		newNote.setSecondName(note.getSecondName());
-		newNote.setLastName(note.getLastName());
-		newNote.setPhone(note.getPhone());
-		newNote.setHomePhone(note.getHomePhone());
-		newNote.setAdress(note.getAddress());
-		newNote.setEmail(note.getEmail());
+		newNote.setName(getName());
+		newNote.setSecondName(getSecondName());
+		newNote.setLastName(getLastName());
+		newNote.setPhone(getPhone());
+		newNote.setHomePhone(getHomePhone());
+		newNote.setAdress(getAddress());
+		newNote.setEmail(getEmail());
+		newNote.setOwner(getOwner());
 		return 	newNote;
 	}
 	
+	@Override
 	public String toString(){
 		return "\nName: " + getName() + 
 				"\nSecondName: " + getSecondName() + 
@@ -89,7 +91,8 @@ public class Note {
 				"\nPhone: " + getPhone() +
 				"\nHomePhone: " + getHomePhone() +
 				"\nAddress: " + getAddress() +
-				"\nEmail: " + getEmail();
+				"\nEmail: " + getEmail() +
+				"\nOwner: " + getOwner();
 	}
 }
 

@@ -1,8 +1,6 @@
 package me.noip.valshin.db.services;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
+import java.util.Map;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
@@ -11,47 +9,57 @@ import me.noip.valshin.exceptions.RamDbException;
 public class MySqlDB implements Db{
 
 	@Override
-	public void addNote(Note note) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void updateNote(Note note) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void deleteNote(Note note) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public List<Note> getByName(String name) {
+	public String getOwner() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Note> getByLastName(String lastName) {
+	public void addNote(Note note) throws RamDbException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateNote(Note note, String id) throws RamDbException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteNote(String id) throws RamDbException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Map<String, Note> getByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Note> getByPhone(String lastName) {
+	public Map<String, Note> getByLastName(String lastName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Note> getNotesData() {
+	public Map<String, Note> getByPhone(String phone) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void addUser(User user) {
+	public Map<String, Note> getNotesData() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addUser(User user) throws RamDbException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -59,17 +67,4 @@ public class MySqlDB implements Db{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String getOwner() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void saveNote(Note note) throws RamDbException {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

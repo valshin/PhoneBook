@@ -4,37 +4,37 @@ div(ng-app='app', ng-controller='pbCtrl')
     table.table.table-bordered.table-hover.table-condensed
         tr(style='font-weight: bold')
             td(style='width:10%') Имя
-            td(style='width:15%') Отчество
+            td(style='width:10%') Отчество
             td(style='width:10%') Фамилия
             td(style='width:10%') Моб. Телефон
-            td(style='width:15%') Дом.телефон
-            td(style='width:15%') Адрес
+            td(style='width:10%') Дом.телефон
+            td(style='width:30%') Адрес
             td(style='width:10%') Email
-            td(style='width:15%')
+            td(style='width:10%')
         tr(ng-repeat='note in notes')
             td
-                span(editable-text='note.data.name', e-name='name', e-form='rowform', onbeforesave='checkName($data, note.id)', e-required='')
-                    | {{ note.data.name || 'empty' }}
-            td
-                span(editable-text='note.data.secondName', e-name='secondName', e-form='rowform')
-                    | {{ note.data.secondName }}
-            td
-                span(editable-text='note.data.lastName', e-name='lastName', e-form='rowform')
+                span(editable-text='note.data.lastName', e-name='lastName', e-form='rowform', onbeforesave="checkName($data, 'Фамилия')", e-required)
                     | {{ note.data.lastName }}
             td
-                span(editable-text='note.data.phone', e-name='phone', e-form='rowform')
+                span(editable-text='note.data.name', e-name='name', e-form='rowform', onbeforesave="checkName($data, 'Имя')", e-required)
+                    | {{ note.data.name || 'empty' }}
+            td
+                span(editable-text='note.data.secondName', e-name='secondName', e-form='rowform', onbeforesave="checkName($data, 'Отчество')", e-required)
+                    | {{ note.data.secondName }}
+            td
+                span(editable-text='note.data.phone', e-name='phone', e-form='rowform', onbeforesave='checkPhone($data, true)', e-required)
                     | {{ note.data.phone }}
             td
-                span(editable-text='note.data.homePhone', e-name='homePhone', e-form='rowform')
+                span(editable-text='note.data.homePhone', e-name='homePhone', e-form='rowform', onbeforesave='checkPhone($data)')
                     | {{ note.data.homePhone }}
             td
-                span(editable-text='note.data.address', e-name='address', e-form='rowform')
+                span(editable-text='note.data.address', e-name='address', e-form='rowform', onbeforesave='checkAddress($data)')
                     | {{ note.data.address }}
             td
-                span(editable-text='note.data.email', e-name='email', e-form='rowform')
+                span(editable-text='note.data.email', e-name='email', e-form='rowform', onbeforesave='checkEmail($data)')
                     | {{ note.data.email }}
             td(style='white-space: nowrap')
-                form.form-buttons.form-inline(editable-form='', name='rowform', onbeforesave='saveNote($data, note.id)', ng-show='rowform.$visible', shown='inserted == note')
+                form.form-buttons.form-inline(editable-form='', name='rowform', onbeforesave='saveNote($data)', ng-show='rowform.$visible', shown='inserted == note')
                     button.btn.btn-primary(type='submit', ng-disabled='rowform.$waiting')
                         | Сохранить
                     button.btn.btn-default(type='button', ng-disabled='rowform.$waiting', ng-click='rowform.$cancel()')

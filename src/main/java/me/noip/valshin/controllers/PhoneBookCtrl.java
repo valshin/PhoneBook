@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +38,7 @@ public class PhoneBookCtrl {
 		if (!validator.checkPhone(note.getPhone())){
 			return jsonHelper.errorAnswer("PhoneError");
 		};
-		if (!validator.checkPhone(note.getHomePhone())){
+		if (!validator.checkHomePhone(note.getHomePhone())){
 			return jsonHelper.errorAnswer("HomePhoneError");
 		};
 		if (!validator.checkAdress(note.getAddress())){
@@ -66,46 +65,23 @@ public class PhoneBookCtrl {
 	}
 	
 	@RequestMapping(value = "update")
-	public String update(@RequestBody Note note) {
+	public String update(@RequestBody Note note, @RequestBody String id) {
 		String error = checkNote(note);
 		if (error != null){
 			return error;
 		}
 		try {
-			db.updateNote(note);
+			db.updateNote(note, id);
 			return jsonHelper.okAnswer();
 		} catch (RamDbException e) {
 			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
 	
-	@RequestMapping(value = "save" , method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
-	public String save(@RequestBody Note note) {
-		String error = checkNote(note);
-		if (error != null){
-			return error;
-		}
-		try {
-			db.addNote(note);
-			return jsonHelper.okAnswer();
-		} catch (RamDbException e1) {
-			try {
-				db.updateNote(note);
-				return jsonHelper.okAnswer();
-			} catch (RamDbException e2) {
-				return jsonHelper.errorAnswer(e1.getMessage() + "\n" + e2.getMessage());
-			}
-		}
-	}
-	
 	@RequestMapping(value = "delete")
-	public String delete(@RequestBody Note note) {
-		String error = checkNote(note);
-		if (error != null){
-			return jsonHelper.errorAnswer(error);
-		}
+	public String delete(@RequestBody String id) {
 		try {
-			db.deleteNote(note);
+			db.deleteNote(id);
 			return jsonHelper.okAnswer();
 		} catch (RamDbException e) {
 			return jsonHelper.errorAnswer(e.getMessage());

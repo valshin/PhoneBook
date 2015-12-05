@@ -2,10 +2,10 @@ package me.noip.valshin.tools.io;
 
 import java.io.IOException;
 
-import me.noip.valshin.db.entities.RamStorage;
+import me.noip.valshin.db.entities.MapStorage;
 
 public interface DataRW {
-	public RamStorage readData() throws IOException;
-	public void writeData(RamStorage storage) throws IOException;
+	public MapStorage readData() throws IOException;
+	public void writeData(MapStorage storage) throws IOException;
 }
 
