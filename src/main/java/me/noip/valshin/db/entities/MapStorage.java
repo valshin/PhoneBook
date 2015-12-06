@@ -45,6 +45,10 @@ public class MapStorage {
 		this.users = users;
 	}
 	
+	public void setNotes(Map<String, Map<String, Note>> notes) {
+		this.notes = notes;
+	}
+	
 	public boolean isEqual(MapStorage storage) {
 		for (Entry<String, User> entry : users.entrySet()){
 			User u1 = entry.getValue();

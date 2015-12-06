@@ -23,6 +23,8 @@ import me.noip.valshin.config.Config;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.MapStorage;
 import me.noip.valshin.db.entities.User;
+import me.noip.valshin.tools.generators.NotesMapGenerator;
+import me.noip.valshin.tools.generators.UsersMapGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -67,16 +69,8 @@ public class JsonRWIntegrationTest {
 	@Test
 	public void testRW(){
 		MapStorage storageOut = new MapStorage();
-		Map<String, Note> notes = new HashMap<>();
-		Map<String, User> users = new HashMap<>();
-		for (int i = 0; i < 10; i++){
-			addNote(notes, i);
-		}
-		for (int i = 0; i < 10; i++){
-			addUser(users, i);
-		}
-		storageOut.setNotes(notes);
-		storageOut.setUsers(users); 
+		storageOut.setNotes(NotesMapGenerator.getRandomNotes(3, 10, 2, 10));
+		storageOut.setUsers(UsersMapGenerator.getRandomUsers(3, 10));
 		
 		try {
 			jsonRw.writeData(storageOut);
@@ -85,38 +79,5 @@ public class JsonRWIntegrationTest {
 		} catch (IOException e) {
 			throw new RuntimeException("Sumthng wrong!!!");
 		}
-	}
-
-	private Note getNote(int num){
-		Note note = new Note();
-		note.setName("N" + num);
-		note.setSecondName("Sn" + num);
-		note.setLastName("Ln" + num);
-		note.setPhone("050000000" + num);
-		note.setOwner(Integer.toString(num % 3));
-		return note;
-	}
-	
-	private User getUser(int num){
-		User user = new User();
-		user.setFio("fio" + num);
-		user.setLogin("login" + num);
-		user.setPassword("password" + num);
-		return user;
-	}
-	
-	private String getNoteKey(int num){
-		return "N" + num + "Sn" + num + "Ln" + num;
-	}
-	
-	private String getUserKey(int num){
-		return "login" + num + "password" + num;
-	}
-	
-	private void addNote(Map<String, Note> map, int num){
-		map.put(getNoteKey(num), getNote(num));
-	}
-	private void addUser(Map<String, User> map, int num){
-		map.put(getUserKey(num), getUser(num));
 	}
 }

@@ -15,8 +15,9 @@ public class MySqlDB implements Db{
 	}
 
 	@Override
-	public void addNote(Note note) throws RamDbException {
+	public String addNote(Note note) throws RamDbException {
 		// TODO Auto-generated method stub
+		return null;
 		
 	}
 

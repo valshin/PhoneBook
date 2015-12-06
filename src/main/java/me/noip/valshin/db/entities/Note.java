@@ -42,7 +42,7 @@ public class Note {
 	public String getAddress() {
 		return address;
 	}
-	public void setAdress(String address) {
+	public void setAddress(String address) {
 		this.address = address;
 	}
 	public String getEmail() {
@@ -69,7 +69,7 @@ public class Note {
 		newNote.setLastName(getLastName());
 		newNote.setPhone(getPhone());
 		newNote.setHomePhone(getHomePhone());
-		newNote.setAdress(getAddress());
+		newNote.setAddress(getAddress());
 		newNote.setEmail(getEmail());
 		return 	newNote;
 	}

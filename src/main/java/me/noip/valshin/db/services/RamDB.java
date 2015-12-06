@@ -38,8 +38,10 @@ public class RamDB implements Db {
 	}
 
 	@Override
-	public void addNote(Note note) {
-		storage.getUserNotes(getOwner()).put(getNextNoteKey(), note);
+	public String addNote(Note note) {
+		String id = getNextNoteKey();
+		storage.getUserNotes(getOwner()).put(id, note);
+		return id;
 	}
 
 	@Override

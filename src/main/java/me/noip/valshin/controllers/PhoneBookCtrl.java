@@ -57,15 +57,17 @@ public class PhoneBookCtrl {
 			return error;
 		}
 		try {
-			db.addNote(note);
-			return jsonHelper.okAnswer();
+			String id = db.addNote(note);
+			return jsonHelper.jsonAnswer(id);
 		} catch (RamDbException e) {
 			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
 	
 	@RequestMapping(value = "update")
-	public String update(@RequestBody Note note, @RequestBody String id) {
+	public String update(@RequestBody RequestContext ctx) {
+		Note note = ctx.getNote();
+		String id = ctx.getId();
 		String error = checkNote(note);
 		if (error != null){
 			return error;
