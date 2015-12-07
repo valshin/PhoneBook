@@ -31,3 +31,7 @@ form.form-horizontal
          .controls
             button.btn.btn-success(ng-click='send()') Зарегистрироваться
             // <button class="btn btn-success" type="submit">Зарегистрироваться</button>
+.alert.alert-danger(ng-repeat='e in error')
+   strong {{e.msg}}
+.alert.alert-success(ng-show='success')
+   strong Вы успешно зарегистрированы

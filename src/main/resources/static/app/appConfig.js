@@ -27,7 +27,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
             template: '<h1>Вы вышли</h1>',
             controller: 'logoutCtrl'
         });
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/login');
 
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -63,7 +63,7 @@ app.controller('mainCtrl', function($rootScope, $scope, $http, $state){
         { title: "Выход", route: "logout", active: false, visible: false}
     ];
 
-    $rootScope.setTabs('home');
+    $rootScope.setTabs('login');
 
     $rootScope.logout = function (callBack) {
         $http.post('logout', '').success(function () {
@@ -98,7 +98,6 @@ app.controller('mainCtrl', function($rootScope, $scope, $http, $state){
             }
             callback && callback();
         }).error(function () {
-            debugger;
             console.log("Login failed");
             $rootScope.authenticated = false;
             callback && callback();
@@ -117,5 +116,5 @@ app.controller('logoutCtrl', function($rootScope, $scope, $http, $state){
 
 app.controller('homeCtrl', function($rootScope, $state){
     $state.go($rootScope.authenticated ? 'phonebook' : 'login');
-    $rootScope.setTabs($rootScope.authenticated ? 'phonebook' : 'login');
+    //$rootScope.setTabs($rootScope.authenticated ? 'phonebook' : 'login');
 });

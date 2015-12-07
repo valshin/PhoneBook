@@ -12,6 +12,7 @@ import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.entities.constants.Sources;
 import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.data.Validator;
+import me.noip.valshin.tools.io.requests.NotesRequestContext;
 import me.noip.valshin.tools.json.JsonHelper;
 
 @RestController
@@ -65,7 +66,7 @@ public class PhoneBookCtrl {
 	}
 	
 	@RequestMapping(value = "update")
-	public String update(@RequestBody RequestContext ctx) {
+	public String update(@RequestBody NotesRequestContext ctx) {
 		Note note = ctx.getNote();
 		String id = ctx.getId();
 		String error = checkNote(note);

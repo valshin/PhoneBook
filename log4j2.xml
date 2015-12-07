@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug">
+<Configuration status="WARN">
     <Properties>
         <Property name="Directory">logs</Property>
         <Property name="File">app.log</Property>
@@ -10,7 +10,7 @@
         </Console>
         <RollingFile name="File" 
             fileName="${Directory}/${File}" 
-            filePattern="${Directory}/${date:yyyy-MM}/test-%d{MM-dd-yyyy}-%i.log.gz">
+            filePattern="${date:yyyy-MM}-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout>
                 <pattern>%d %p %logger{36} [%t] %m%n</pattern>
             </PatternLayout>

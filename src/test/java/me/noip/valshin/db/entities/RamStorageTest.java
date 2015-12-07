@@ -1,12 +1,8 @@
 package me.noip.valshin.db.entities;
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import me.noip.valshin.tools.generators.NotesMapGenerator;
 import me.noip.valshin.tools.generators.UsersMapGenerator;

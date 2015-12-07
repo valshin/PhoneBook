@@ -45,3 +45,5 @@
     </div>
   </fieldset>
 </form>
+<div ng-repeat="e in error" class="alert alert-danger"><strong>{{e.msg}}</strong></div>
+<div ng-show="success" class="alert alert-success"><strong>Вы успешно зарегистрированы</strong></div>

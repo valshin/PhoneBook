@@ -15,6 +15,7 @@ import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.User;
 import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.data.Validator;
+import me.noip.valshin.tools.json.JsonHelper;
 
 @SpringBootApplication
 @RestController
@@ -25,6 +26,8 @@ public class MainCtrl {
 	Db db;
 	@Autowired
 	Validator validator;
+	@Autowired
+	JsonHelper jsonHelper;
 	
 	@RequestMapping(value = "/adduser" , method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
 	public @ResponseBody String add(
@@ -53,10 +56,10 @@ public class MainCtrl {
 		try {
 			db.addUser(user);
 			logger.info("User added successfully");
-			return "OK";
+			return jsonHelper.okAnswer();
 		} catch (RamDbException e) {
 			logger.error(e.getMessage());
-			return e.getMessage();
+			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
 	
