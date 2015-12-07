@@ -65,29 +65,39 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
             });
     };
 
-    $scope.saveNote = function(data) {
+    $scope.saveNote = function(data, index) {
         debugger;
-        $scope.addNote(data);
+        var noteId = $scope.notes[index].id;
+
+        if (noteId.indexOf('local') + 1){
+            $scope.addNote(data, function(id){
+                debugger;
+                $scope.notes[index].id = id;
+            })
+        } else {
+            $scope.updateNote(data, noteId);
+        }
+        //$scope.addNote(data);
     };
 
-    $scope.addNote = function(data) {
+    $scope.addNote = function(data, callBack) {
         debugger;
         $http.post('/phonebook/add', data).success(function(data) {
             debugger;
-
+            callBack && callBack(data.data);
         }).error(function(data){
             debugger;
         });
     };
 
-    $scope.updateNote = function(data, id) {
-        //debugger;
-        //$http.post('/phonebook/update', data).success(function(data) {
-        //    debugger;
-        //
-        //}).error(function(data){
-        //    debugger;
-        //});
+    $scope.updateNote = function(data, id, callBack) {
+        debugger;
+        $http.post('/phonebook/update', {note:data, id:id}).success(function(data) {
+            debugger;
+            callBack && callBack(data);
+        }).error(function(data){
+            debugger;
+        });
     };
 
     $scope.removeNote = function(index) {
@@ -96,7 +106,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
 
     $scope.addLocalNote = function() {
         $scope.inserted = {
-            id: $scope.notes.length+1,
+            id: 'local' + $scope.notes.length+1,
             data: {
                 name: '',
                 secondName: '',
@@ -106,7 +116,6 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
                 address: '',
                 email: ''
             }
-
         };
         $scope.notes.push($scope.inserted);
     };

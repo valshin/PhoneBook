@@ -8,7 +8,7 @@ import me.noip.valshin.exceptions.RamDbException;
 
 public interface Db{
 	public String getOwner();
-	public void addNote(Note note) throws RamDbException;
+	public String addNote(Note note) throws RamDbException;
 	public void updateNote(Note note, String id) throws RamDbException;
 	public void deleteNote(String id) throws RamDbException;
 	public Map<String, Note> getByName(String name);

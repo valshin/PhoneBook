@@ -26,10 +26,11 @@ public class FileDB extends RamDB{
 	}
 	
 	@Override
-	public void addNote(Note note){
+	public String addNote(Note note){
 		try {
-			super.addNote(note);
+			String id = super.addNote(note);
 			write();
+			return id;
 		} catch (IOException e){
 			throw new CoreException("Read/Write Error");
 		}

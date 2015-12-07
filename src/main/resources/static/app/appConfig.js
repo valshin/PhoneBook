@@ -4,7 +4,8 @@ app.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider
         .state('home', {
             url: '/',
-            templateUrl: "home.html"
+            templateUrl: "home.html",
+            controller: "homeCtrl"
         })
         .state('phonebook', {
             url: '/phonebook',
@@ -112,4 +113,9 @@ app.controller('logoutCtrl', function($rootScope, $scope, $http, $state){
             $state.go('login');
         }
     });
+});
+
+app.controller('homeCtrl', function($rootScope, $state){
+    $state.go($rootScope.authenticated ? 'phonebook' : 'login');
+    $rootScope.setTabs($rootScope.authenticated ? 'phonebook' : 'login');
 });

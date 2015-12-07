@@ -1,4 +1,4 @@
-app.controller('regCtrl', ['$scope', '$http', function($scope, $http){
+app.controller('regCtrl', ['$rootScope', '$scope', '$http', '$state', function($rootScope, $scope, $http, $state){
     $scope.send = function(){
         debugger;
         $http({
@@ -6,8 +6,6 @@ app.controller('regCtrl', ['$scope', '$http', function($scope, $http){
             url: '/adduser',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
-                //'Upgrade-Insecure-Requests': "1",
-                //'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
             },
             transformRequest: function(obj) {
                 var str = [];
@@ -21,7 +19,8 @@ app.controller('regCtrl', ['$scope', '$http', function($scope, $http){
                 password: $scope.password
             }
         }).success(function(response){
-            debugger;
+            $state.go('phonebook');
+            $rootScope.setTabs('phonebook');
         });
     };
 }]);
