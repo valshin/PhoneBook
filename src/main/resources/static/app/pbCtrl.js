@@ -4,10 +4,33 @@ app.run(function(editableOptions) {
 
 app.controller('pbCtrl', function($scope, $filter, $http) {
     $scope.searchConditions = [
-        {id: 'name', title: 'Имени'},
-        {id: 'lastName', title: 'Фамилии'},
-        {id: 'phone', title: 'Номеру телефона'}
+        {id: 'name', title: 'Имени '},
+        {id: 'lastName', title: 'Фамилии '},
+        {id: 'phone', title: 'Номеру телефона '}
     ];
+
+    $scope.curCondition = $scope.searchConditions[0];
+    $scope.setCondition = function(index){
+        $scope.curCondition = $scope.searchConditions[index];
+    };
+
+    $scope.search = function(){
+        if (!$scope.searchValue){
+            return;
+        }
+        debugger;
+        switch ($scope.curCondition.id){
+            case 'name':
+                $scope.getByName($scope.searchValue);
+                break;
+            case 'lastName':
+                $scope.getByLastName($scope.searchValue);
+                break;
+            case 'phone':
+                $scope.getByPhone($scope.searchValue);
+                break;
+        }
+    };
 
     $scope.notes = [];
     $scope.setNotes = function(data){
@@ -40,6 +63,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
             '/phonebook/get_by_name',
             {params: {name: name}}
         ).success(function(data) {
+                debugger;
                 $scope.setNotes(data);
                 callback && callback();
             });
@@ -50,6 +74,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
             '/phonebook/get_by_lastname',
             {params: {lastName: lastName}}
         ).success(function(data) {
+                debugger;
                 $scope.setNotes(data);
                 callback && callback();
             });
@@ -148,5 +173,5 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         if (!(re.test(data))){
             return "Неверный формат e-mail";
         }
-    }
+    };
 });

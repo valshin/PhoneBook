@@ -1,5 +1,23 @@
-h4 Список контактов
-div(ng-app='app', ng-controller='pbCtrl')
+.container(style="margin-top:20px;")
+    .row
+        .col-xs-8.col-xs-offset-2
+            .input-group
+                .input-group-addon Искать по:
+                .input-group-btn.search-panel(uib-dropdown)
+                    button#single-button.btn.btn-primary(type='button', uib-dropdown-toggle='', ng-disabled='disabled')
+                        | {{curCondition.title}}
+                        span.caret
+                    ul.uib-dropdown-menu(role='menu', aria-labelledby='single-button')
+                        li(role='menuitem', ng-repeat='(infex, condition) in searchConditions')
+                            a(ng-click="setCondition(infex)") {{condition.title}}
+                input.form-control(type='text', ng-model="searchValue")
+                span.input-group-btn
+                    button.btn.btn-default(type='button', ng-click="search()")
+                        span.glyphicon.glyphicon-search
+
+
+
+    h4 Список контактов
     button.btn.btn-default(ng-click='getAll()') Показать все записи
     table.table.table-bordered.table-hover.table-condensed
         tr(style='font-weight: bold')
@@ -43,20 +61,3 @@ div(ng-app='app', ng-controller='pbCtrl')
                     button.btn.btn-primary(ng-click='rowform.$show()') Изменить
                     button.btn.btn-danger(ng-click='removeNote($index)') Удалить
     button.btn.btn-default(ng-click='addLocalNote()') Добавить
-
-//.container
-//    .row
-//        #filter-panel.collapse.filter-panel
-//            .panel.panel-default
-//                .panel-body
-//                    form.form-inline
-//                        .form-group
-//                            label.filter-col(style='margin-right:0;', for='pref-perpage') Искать по:
-//                            select#pref-perpage.form-control
-//                                option(ng-repeat='condition in searchConditions', value='{{condition.id}}') {{condition.value}}
-//                        button.btn.btn-default.filter-col(type='submit') Искать
-//        button.btn.btn-primary(type='button', data-toggle='collapse', data-target='#filter-panel')
-//            span.glyphicon.glyphicon-cog Поиск
-//
-//        button.btn.btn-default(ng-click='getAll()') Показать все записи
-//        h4 Список:

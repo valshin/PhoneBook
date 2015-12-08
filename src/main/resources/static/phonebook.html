@@ -1,6 +1,21 @@
 
-<h4>Список контактов</h4>
-<div ng-app="app" ng-controller="pbCtrl">
+<div style="margin-top:20px;" class="container">
+  <div class="row">
+    <div class="col-xs-8 col-xs-offset-2">
+      <div class="input-group">
+        <div class="input-group-addon">Искать по:</div>
+        <div uib-dropdown="uib-dropdown" class="input-group-btn search-panel">
+          <button id="single-button" type="button" uib-dropdown-toggle="" ng-disabled="disabled" class="btn btn-primary">{{curCondition.title}}<span class="caret"></span></button>
+          <ul role="menu" aria-labelledby="single-button" class="uib-dropdown-menu">
+            <li role="menuitem" ng-repeat="(infex, condition) in searchConditions"><a ng-click="setCondition(infex)">{{condition.title}}</a></li>
+          </ul>
+        </div>
+        <input type="text" ng-model="searchValue" class="form-control"/><span class="input-group-btn">
+          <button type="button" ng-click="search()" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button></span>
+      </div>
+    </div>
+  </div>
+  <h4>Список контактов</h4>
   <button ng-click="getAll()" class="btn btn-default">Показать все записи</button>
   <table class="table table-bordered table-hover table-condensed">
     <tr style="font-weight: bold">
@@ -35,19 +50,3 @@
   </table>
   <button ng-click="addLocalNote()" class="btn btn-default">Добавить</button>
 </div>
-<!--.container-->
-<!--    .row-->
-<!--        #filter-panel.collapse.filter-panel-->
-<!--            .panel.panel-default-->
-<!--                .panel-body-->
-<!--                    form.form-inline-->
-<!--                        .form-group-->
-<!--                            label.filter-col(style='margin-right:0;', for='pref-perpage') Искать по:-->
-<!--                            select#pref-perpage.form-control-->
-<!--                                option(ng-repeat='condition in searchConditions', value='{{condition.id}}') {{condition.value}}-->
-<!--                        button.btn.btn-default.filter-col(type='submit') Искать-->
-<!--        button.btn.btn-primary(type='button', data-toggle='collapse', data-target='#filter-panel')-->
-<!--            span.glyphicon.glyphicon-cog Поиск-->
-<!---->
-<!--        button.btn.btn-default(ng-click='getAll()') Показать все записи-->
-<!--        h4 Список:-->
