@@ -1,4 +1,4 @@
-package me.noip.valshin;
+package me.noip.valshin.config;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,11 +2,17 @@ package me.noip.valshin.db.services;
 
 import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
 import me.noip.valshin.exceptions.RamDbException;
 public class MySqlDB implements Db{
+	@Autowired 
+	DataSource dataSource;
 
 	@Override
 	public String getOwner() {
