@@ -145,25 +145,25 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         $scope.notes.push($scope.inserted);
     };
 
-    $scope.checkName = function(data, nameType) {
+    $scope.checkName = function(data) {
         if (data.length < 4) {
-            return nameType + ' содержит меньше 4 символов';
+            return 'Менее 4 символов';
         } else if (data.length > 200){
-            return nameType + ' содержит слишком много символов';
+            return 'Сделайте короче';
         }
     };
 
     $scope.checkPhone = function(data, isRequired) {
         if (!isRequired && data.length == 0) return;
         if (!((/\+380\(\d{2}\)\d{7}/).test(data))){
-            return "Неверный формат номера";
+            return "Неверный формат";
         }
     };
 
     $scope.checkAddress = function(data) {
         if (!data) return;
         if (data.length > 200){
-            return "Адрес слишклм длинный";
+            return "Слишклм длинный";
         }
     };
 
@@ -171,7 +171,7 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         if (!data) return;
         var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
         if (!(re.test(data))){
-            return "Неверный формат e-mail";
+            return "Неверный формат";
         }
     };
 });
