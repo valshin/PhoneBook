@@ -31,14 +31,4 @@ public class MvcConfig {
 		}
 		throw new CoreException("unknown database type:" + config.getDbType());
 	}
-	
-//	@Bean
-//	public CustomAuthenticationProvider customAuthenticationProvider(){
-//		return new CustomAuthenticationProvider();
-//	}
-//	
-//	@Bean
-//    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-//       return new PropertySourcesPlaceholderConfigurer();
-//    }
 }

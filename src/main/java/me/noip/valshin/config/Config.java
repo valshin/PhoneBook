@@ -11,10 +11,12 @@ public class Config {
 	private String dbType;
 	@Value("${DB_Host}")
 	private String dbHost;
+	@Value("${DB_Port}")
+	private String dbPort;
 	@Value("${DB_Name}")
 	private String mysqlDbName;
-	@Value("${DB_Login}")
-	private String mysqlDbLogin;
+	@Value("${DB_User}")
+	private String mysqlDbUser;
 	@Value("${DB_Password}")
 	private String mysqlDbPassword;
 	
@@ -36,22 +38,32 @@ public class Config {
 	public void setDbHost(String dbHost) {
 		this.dbHost = dbHost;
 	}
+	public String getDbPort() {
+		return dbPort;
+	}
+	public void setDbPort(String dbPort) {
+		this.dbPort = dbPort;
+	}
 	public String getMysqlDbName() {
 		return mysqlDbName;
 	}
 	public void setMysqlDbName(String mysqlDbName) {
 		this.mysqlDbName = mysqlDbName;
 	}
-	public String getMysqlDbLogin() {
-		return mysqlDbLogin;
+	public String getMysqlDbUsername() {
+		return mysqlDbUser;
 	}
-	public void setMysqlDbLogin(String mysqlDbLogin) {
-		this.mysqlDbLogin = mysqlDbLogin;
+	public void setMysqlDbUser(String mysqlDbUser) {
+		this.mysqlDbUser = mysqlDbUser;
 	}
 	public String getMysqlDbPassword() {
 		return mysqlDbPassword;
 	}
 	public void setMysqlDbPassword(String mysqlDbPassword) {
 		this.mysqlDbPassword = mysqlDbPassword;
+	}
+	
+	public String getUrl(){
+		return "jdbc:mysql://"+ dbHost + ":" + dbPort + "/" + mysqlDbName;
 	}
 }

@@ -33,10 +33,12 @@ import me.noip.valshin.tools.generators.UsersMapGenerator;
 @TestPropertySource(
 	properties = {
 		"File_DB_Path=./src/test/resources/jsonrw.db", 
-		"DB_Type=file", "DB_Host=localhost", 
-		"DB_Name=phonebook_by_valshin", 
-		"DB_Login=root", 
-		"DB_Password=root"
+		"DB_Type=file",
+		"DB_Host=localhost",
+		"DB_Port=3306",
+		"DB_Name=phonebook_by_valshin",
+		"DB_User=root", 
+		"DB_Password=nishlav2"
 	}
 )
 public class JsonRWIntegrationTest {
