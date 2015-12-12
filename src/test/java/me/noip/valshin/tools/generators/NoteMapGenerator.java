@@ -5,7 +5,7 @@ import java.util.Map;
 
 import me.noip.valshin.db.entities.Note;
 
-public class NotesMapGenerator {
+public class NoteMapGenerator {
 	
 	public static Map <String, Map<String, Note>> getRandomNotes(int usersMin, int usersMax, int notesMin, int notesMax){
 		Map <String, Map<String, Note>> notes = new HashMap <String, Map<String, Note>>();

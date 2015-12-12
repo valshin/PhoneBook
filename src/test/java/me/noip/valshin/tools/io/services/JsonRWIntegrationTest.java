@@ -23,8 +23,8 @@ import me.noip.valshin.config.Config;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.MapStorage;
 import me.noip.valshin.db.entities.User;
-import me.noip.valshin.tools.generators.NotesMapGenerator;
-import me.noip.valshin.tools.generators.UsersMapGenerator;
+import me.noip.valshin.tools.generators.NoteMapGenerator;
+import me.noip.valshin.tools.generators.UserMapGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -71,8 +71,8 @@ public class JsonRWIntegrationTest {
 	@Test
 	public void testRW(){
 		MapStorage storageOut = new MapStorage();
-		storageOut.setNotes(NotesMapGenerator.getRandomNotes(3, 10, 2, 10));
-		storageOut.setUsers(UsersMapGenerator.getRandomUsers(3, 10));
+		storageOut.setNotes(NoteMapGenerator.getRandomNotes(3, 10, 2, 10));
+		storageOut.setUsers(UserMapGenerator.getRandomUsers(3, 10));
 		
 		try {
 			jsonRw.writeData(storageOut);

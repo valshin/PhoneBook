@@ -1,11 +1,11 @@
 package me.noip.valshin.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import me.noip.valshin.db.entities.User;
 
-@Component
+@Service
 public class ActiveUserAccessorImpl implements ActiveUserAccessor{
     public User getActiveUser(){
         return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();

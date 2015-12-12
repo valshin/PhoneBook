@@ -5,7 +5,7 @@ import java.util.Map;
 
 import me.noip.valshin.db.entities.User;
 
-public class UsersMapGenerator {
+public class UserMapGenerator {
 	public static Map<String, User> getRandomUsers(int min, int max){
 		return getRandomUsers(RandomValuesGenerator.getRandomInt(min, max));
 	}
