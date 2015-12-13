@@ -64,6 +64,6 @@ public class Config {
 	}
 	
 	public String getUrl(){
-		return "jdbc:mysql://"+ dbHost + ":" + dbPort + "/" + mysqlDbName;
+		return "jdbc:mysql://"+ dbHost + ":" + dbPort + "/" + mysqlDbName + "?useUnicode=true&characterEncoding=UTF-8";
 	}
 }
