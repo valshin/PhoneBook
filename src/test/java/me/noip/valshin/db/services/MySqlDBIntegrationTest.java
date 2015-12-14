@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,14 +61,20 @@ public class MySqlDBIntegrationTest {
 			for (Note note : notes[userId]) {
 				db.addNote(note);
 			}
+			userId++;
 		}
+		userId = 0;
 		for (User user : users) {
 			activeUserAccessor.setActiveUser(user);
 			assertTrue(user.equals(db.getUser(user.getLogin(), user.getPassword())));
-			for (Note note : notes[userId]) {
-//				List <Note> dbNotes = db.getNotesData().values();
-				
+			Map<String, Note> dbNotes = db.getNotesData();
+			assertTrue(dbNotes.size() == notes[userId].length);
+			int noteId = 0;
+			for (Entry <String, Note> noteEntry : dbNotes.entrySet()){
+				assertTrue(noteEntry.getValue().equals(notes[userId][noteId]));
+				noteId++;
 			}
+			userId++;
 		}
 
 	}
