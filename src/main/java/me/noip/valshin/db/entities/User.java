@@ -1,6 +1,7 @@
 package me.noip.valshin.db.entities;
 
 public class User {
+	private long id;
 	private String login;
 	private String password;
 	private String fio;
@@ -22,6 +23,12 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	public boolean isEqual(User user){

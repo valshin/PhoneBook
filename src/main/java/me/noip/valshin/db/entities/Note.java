@@ -8,6 +8,7 @@ public class Note {
 	private String phone;
 	private String address;
 	private String email;
+	private long owner;
 	
 	public String getName() {
 		return name;
@@ -50,6 +51,12 @@ public class Note {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public long getOwner() {
+		return owner;
+	}
+	public void setOwner(long owner) {
+		this.owner = owner;
 	}
 	
 	public boolean isEqual(Note note){
