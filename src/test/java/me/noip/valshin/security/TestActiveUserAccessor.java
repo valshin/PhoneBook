@@ -12,7 +12,7 @@ public class TestActiveUserAccessor implements ActiveUserAccessor{
 	public void setActiveUser(User user){
 		activeUser = user;
     }
-	public User getActiveUser(){
+	public User getActiveUserName(){
         return activeUser;
     }
 }

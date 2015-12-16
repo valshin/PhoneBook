@@ -31,10 +31,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import me.noip.valshin.config.Config;
 import me.noip.valshin.config.DataSourceConfig;
-import me.noip.valshin.db.entities.Note;
-import me.noip.valshin.db.entities.User;
-import me.noip.valshin.tools.generators.NoteArrayGenerator;
-import me.noip.valshin.tools.generators.UserArrayGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -42,17 +38,12 @@ import me.noip.valshin.tools.generators.UserArrayGenerator;
 @Configuration
 @TestPropertySource(properties = { "File_DB_Path=./src/test/resources/jsonrw.db",
 		"tablesQuery=./src/test/resources/testTablesQuery", "DB_Type=mysql", "DB_Host=localhost", "DB_Port=3306",
-		"DB_Name=phonebook_by_valshin", "DB_User=root", "DB_Password=root" })
+		"DB_Name=phonebook_test", "DB_User=root", "DB_Password=root" })
 public class DataSourceIntegrationTest {
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
-
-//	@Bean
-//	public Config config() {
-//		return new Config();
-//	}
 
 	@Autowired
 	Config config;
@@ -91,8 +82,8 @@ public class DataSourceIntegrationTest {
 		if (resultSet != null)
 			resultSet.close();
 		if (statement != null) {
-			statement.executeUpdate("DROP TABLE `testNotes`");
-			statement.executeUpdate("DROP TABLE `testUsers`");
+			statement.executeUpdate("DROP TABLE `notes`");
+			statement.executeUpdate("DROP TABLE `users`");
 			statement.close();
 		}
 		if (connection != null)
@@ -108,21 +99,21 @@ public class DataSourceIntegrationTest {
 
 	@Test
 	public void testRW() throws SQLException {
-		String usersQuery = "INSERT INTO `testUsers` SET `login`='логин1', `pass`='testpass', `fio`='ФИО1'";
+		String usersQuery = "INSERT INTO `users` SET `login`='логин1', `password`='testpass', `fio`='ФИО1'";
 		int insertRowsCount = statement.executeUpdate(usersQuery);
 		assertEquals(1, insertRowsCount);
-		resultSet = statement.executeQuery("SELECT * FROM `testUsers`");
+		resultSet = statement.executeQuery("SELECT * FROM `users`");
 		assertTrue(resultSet.next());
 		assertEquals("1", resultSet.getString("id"));
 		assertEquals("логин1", resultSet.getString("login"));
-		assertEquals("testpass", resultSet.getString("pass"));
+		assertEquals("testpass", resultSet.getString("password"));
 		assertEquals("ФИО1", resultSet.getString("fio"));
 		resultSet.close();
 
-		String notesQuery = "INSERT INTO `testNotes` SET `owner`='1', `name`='имя1', `second_name`='отч1', `last_name`='фамилия1', `phone`='телефон1', `home_phone`='телефон2', `address`='адрес1', `email`='qwerty@asdf.zx'";
+		String notesQuery = "INSERT INTO `notes` SET `owner`='1', `name`='имя1', `second_name`='отч1', `last_name`='фамилия1', `phone`='телефон1', `home_phone`='телефон2', `address`='адрес1', `email`='qwerty@asdf.zx'";
 		insertRowsCount = statement.executeUpdate(notesQuery);
 		assertEquals(1, insertRowsCount);
-		resultSet = statement.executeQuery("SELECT * FROM `testNotes`");
+		resultSet = statement.executeQuery("SELECT * FROM `notes`");
 		assertTrue(resultSet.next());
 		assertEquals("1", resultSet.getString("id"));
 		assertEquals("имя1", resultSet.getString("name"));
@@ -133,56 +124,38 @@ public class DataSourceIntegrationTest {
 		assertEquals("адрес1", resultSet.getString("address"));
 		assertEquals("qwerty@asdf.zx", resultSet.getString("email"));
 		resultSet.close();
-		
-		String usersNotesQuery = "INSERT INTO `testUsersNotes` SET `user`='2', `note`='3'";
-		insertRowsCount = statement.executeUpdate(usersNotesQuery);
-		assertEquals(1, insertRowsCount);
-		assertEquals("1", resultSet.getString("id"));
-		assertEquals("2", resultSet.getString("user"));
-		assertEquals("3", resultSet.getString("note"));
-		
 	}
 
 	//TODO move to mysqldb test
-	public void testMultipleRW() throws SQLException {
-		User[] users = UserArrayGenerator.getRandomUsers(100, 200);
-		int userId = 1;
-		for (User user : users) {
-			int noteId = 1;
-			Note[] notes = NoteArrayGenerator.getRandomNotes(100, 200);
-			this.writeUser(user);
-			for (Note note : notes) {
-				this.writeNote(note);
-				this.writeRelation(userId, noteId);
-				noteId++;
-			}
-			userId++;
-		}
-
-	}
-
-	private void writeUser(User user) throws SQLException {
-		String query = String.format("INSERT INTO `testUsers` SET `login`='%s', `pass`='%s', `fio`='%s'", 
-				user.getLogin(), 
-				user.getPassword(), 
-				user.getFio());
-		statement.executeUpdate(query);
-	}
-
-	private void writeNote(Note note) throws SQLException {
-		String query = "INSERT INTO `testNotes` SET ";
-		query += String.format("`name`='%s' ", note.getName());
-		query += String.format("`second_name`='%s' ", note.getSecondName());
-		query += String.format("`last_name`='%s' ", note.getLastName());
-		query += String.format("`phone`='%s' ", note.getPhone());
-		query += note.getHomePhone() != null ? String.format("`home_phone`='%s' ", note.getHomePhone()) : "";
-		query += note.getAddress() != null ? String.format("`address`='%s' ", note.getAddress()) : "";
-		query += note.getEmail() != null ? String.format("`email`='%s' ", note.getEmail()) : "";
-		statement.executeUpdate(query);
-	}
-	
-	private void writeRelation(int userId, int noteId) throws SQLException {
-		String query = String.format("INSERT INTO `testUsersNotes` SET `user`='%s', `note`='%s'", userId, noteId);
-		statement.executeUpdate(query);
-	}
+//	public void testMultipleRW() throws SQLException {
+//		User[] users = UserArrayGenerator.getRandomUsers(100, 200);
+//		for (User user : users) {
+//			Note[] notes = NoteArrayGenerator.getRandomNotes(100, 200);
+//			this.writeUser(user);
+//			for (Note note : notes) {
+//				this.writeNote(note);
+//			}
+//		}
+//
+//	}
+//
+//	private void writeUser(User user) throws SQLException {
+//		String query = String.format("INSERT INTO `testUsers` SET `login`='%s', `password`='%s', `fio`='%s'", 
+//				user.getLogin(), 
+//				user.getPassword(), 
+//				user.getFio());
+//		statement.executeUpdate(query);
+//	}
+//
+//	private void writeNote(Note note) throws SQLException {
+//		String query = "INSERT INTO `testNotes` SET ";
+//		query += String.format("`name`='%s' ", note.getName());
+//		query += String.format("`second_name`='%s' ", note.getSecondName());
+//		query += String.format("`last_name`='%s' ", note.getLastName());
+//		query += String.format("`phone`='%s' ", note.getPhone());
+//		query += note.getHomePhone() != null ? String.format("`home_phone`='%s' ", note.getHomePhone()) : "";
+//		query += note.getAddress() != null ? String.format("`address`='%s' ", note.getAddress()) : "";
+//		query += note.getEmail() != null ? String.format("`email`='%s' ", note.getEmail()) : "";
+//		statement.executeUpdate(query);
+//	}
 }

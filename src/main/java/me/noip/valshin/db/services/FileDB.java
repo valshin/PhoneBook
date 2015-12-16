@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
 import me.noip.valshin.exceptions.CoreException;
-import me.noip.valshin.exceptions.RamDbException;
 import me.noip.valshin.tools.io.services.JsonRW;
 public class FileDB extends RamDB{
 	protected Logger logger = Logger.getLogger(FileDB.class.getName());
@@ -37,11 +36,11 @@ public class FileDB extends RamDB{
 	}
 	
 	@Override
-	public void updateNote(Note note, String id) throws RamDbException {
+	public void updateNote(Note note, String id) throws CoreException {
 		try {
 			super.updateNote(note, id);
 			write();
-		} catch (RamDbException e){
+		} catch (CoreException e){
 			throw e;
 		} catch (IOException e){
 			throw new CoreException("Read/Write Error");
@@ -49,11 +48,11 @@ public class FileDB extends RamDB{
 	}
 	
 	@Override
-	public void deleteNote(String id) throws RamDbException {
+	public void deleteNote(String id) throws CoreException {
 		try {
 			super.deleteNote(id);
 			write();
-		} catch (RamDbException e){
+		} catch (CoreException e){
 			throw e;
 		} catch (IOException e){
 			throw new CoreException("Read/Write Error");
@@ -61,11 +60,11 @@ public class FileDB extends RamDB{
 	}
 	
 	@Override
-	public void addUser(User user) throws RamDbException {
+	public void addUser(User user) throws CoreException {
 		try {
 			super.addUser(user);
 			write();
-		} catch (RamDbException e){
+		} catch (CoreException e){
 			throw e;
 		} catch (IOException e){
 			throw new CoreException("Read/Write Error");

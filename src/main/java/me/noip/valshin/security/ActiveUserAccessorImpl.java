@@ -7,7 +7,7 @@ import me.noip.valshin.db.entities.User;
 
 @Service
 public class ActiveUserAccessorImpl implements ActiveUserAccessor{
-    public User getActiveUser(){
+    public User getActiveUserName(){
         return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

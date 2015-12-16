@@ -1,8 +1,10 @@
 package me.noip.valshin.db.services;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -11,107 +13,200 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import me.noip.valshin.db.Db;
+import me.noip.valshin.db.MysqlQueryBuilder;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
-import me.noip.valshin.exceptions.RamDbException;
+import me.noip.valshin.exceptions.CoreException;
 import me.noip.valshin.security.ActiveUserAccessor;
 public class MySqlDB implements Db{
 	@Autowired 
 	DataSource dataSource;
 	@Autowired
 	ActiveUserAccessor activeUserAccessor;
+	@Autowired
+	MysqlQueryBuilder queryBuilder;
 	
 	Connection connection;
 	Statement statement;
 	@PostConstruct
-	public void initStorage() throws SQLException {
+	private void initConnection() throws SQLException {
 		connection = dataSource.getConnection();
 		statement = connection.createStatement();
 	}
+	
+	private void closeConnection() throws SQLException {
+		if (connection != null) connection.close();
+		if (statement != null) statement.close();
+	}
+	
+	private User makeUser(ResultSet resultSet, String login, String password) throws SQLException{
+		User user = new User();
+		user.setLogin(login);
+		user.setPassword(password);
+		user.setFio(resultSet.getString("fio"));
+		user.setId(resultSet.getLong("id"));
+		return user;
+	}
+	
+	private Note makeNote(ResultSet resultSet) throws SQLException{
+		Note note = new Note();
+		note.setOwner(resultSet.getLong("owner"));
+		note.setName(resultSet.getString("name"));
+		note.setSecondName(resultSet.getString("secondName"));
+		note.setLastName(resultSet.getString("lastName"));
+		note.setPhone(resultSet.getString("phone"));
+		if (resultSet.getString("homePhone") != null){
+			note.setHomePhone(resultSet.getString("homePhone"));
+		}
+		if (resultSet.getString("address") != null){
+			note.setAddress(resultSet.getString("address"));
+		}
+		if (resultSet.getString("email") != null){
+			note.setEmail(resultSet.getString("email"));
+		}
+		return note;
+	}
+	
+	private Map<String, Note> makeNotes(ResultSet resultSet) throws SQLException{
+		Map<String, Note> out = new HashMap<>();
+		while (resultSet.next()){
+			String key = String.format("%d", resultSet.getLong("id"));
+			out.put(key, makeNote(resultSet));
+		}
+		return out;
+	}
 
-	@Override
-	public String getOwner() {
-		// TODO Auto-generated method stub
-		return null;
+	public long getOwner() {
+		return activeUserAccessor.getActiveUserName().getId();
 	}
 
 	@Override
-	public String addNote(Note note) throws RamDbException {
-		// TODO Auto-generated method stub
-		return null;
+	public String addNote(Note note) {
+		note.setOwner(getOwner());
+		try {
+			return writeNote(note);
+		} catch (SQLException e) {
+			throw new CoreException(e);
+		}
+	}
+
+	@Override
+	public void updateNote(Note note, String id) {
+		try {
+			statement.executeUpdate(queryBuilder.noteUpdate(Long.valueOf(id), note));
+		} catch (NumberFormatException | SQLException e) {
+			throw new CoreException("Could not update note", e);
+		}
 		
 	}
 
 	@Override
-	public void updateNote(Note note, String id) throws RamDbException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteNote(String id) throws RamDbException {
-		// TODO Auto-generated method stub
-		
+	public void deleteNote(String id) {
+		try {
+			statement.executeUpdate(queryBuilder.noteDelete(Long.valueOf(id)));
+		} catch (NumberFormatException | SQLException e) {
+			throw new CoreException("Could not delete note", e);
+		}
 	}
 
 	@Override
 	public Map<String, Note> getByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			ResultSet resultSet = statement.executeQuery(queryBuilder.notesRead(getOwner(), new HashMap<String, String>(){{
+				put("name", name);
+			}}));
+			Map<String, Note> out = makeNotes(resultSet);
+			resultSet.close();
+			return out;
+		} catch (SQLException e) {
+			throw new CoreException("SQL error", e);
+		}
 	}
 
 	@Override
 	public Map<String, Note> getByLastName(String lastName) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			ResultSet resultSet = statement.executeQuery(queryBuilder.notesRead(getOwner(), new HashMap<String, String>(){{
+				put("last_name", lastName);
+			}}));
+			Map<String, Note> out = makeNotes(resultSet);
+			resultSet.close();
+			return out;
+		} catch (SQLException e) {
+			throw new CoreException("SQL error", e);
+		}
 	}
 
 	@Override
 	public Map<String, Note> getByPhone(String phone) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			ResultSet resultSet = statement.executeQuery(queryBuilder.notesRead(getOwner(), new HashMap<String, String>(){{
+				put("phone", phone);
+				put("home_phone", phone);
+			}}));
+			Map<String, Note> out = makeNotes(resultSet);
+			resultSet.close();
+			return out;
+		} catch (SQLException e) {
+			throw new CoreException("SQL error", e);
+		}
 	}
 
 	@Override
 	public Map<String, Note> getNotesData() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			ResultSet resultSet = statement.executeQuery(queryBuilder.notesRead(getOwner()));
+			Map<String, Note> out = makeNotes(resultSet);
+			resultSet.close();
+			return out;
+		} catch (SQLException e) {
+			throw new CoreException("SQL error", e);
+		}
 	}
 
 	@Override
-	public void addUser(User user) throws RamDbException {
-		// TODO Auto-generated method stub
+	public void addUser(User user) {
+		try {
+			writeUser(user);
+		} catch (SQLException e) {
+			throw new CoreException("Could not add user", e);
+		}
 		
 	}
 
 	@Override
 	public User getUser(String login, String password) {
-		// TODO Auto-generated method stub
+		try {
+			ResultSet resultSet = statement.executeQuery(queryBuilder.userRead(login, password));
+			if (resultSet.next()){
+				User user = makeUser(resultSet, login, password);
+				resultSet.close();
+				return user;
+			}
+		} catch (SQLException e) {
+			throw new CoreException("SQL error", e);
+		}
 		return null;
 	}
 	
 	private void writeUser(User user) throws SQLException {
-		String query = String.format("INSERT INTO `testUsers` SET `login`='%s', `pass`='%s', `fio`='%s'", 
-				user.getLogin(), 
-				user.getPassword(), 
-				user.getFio());
-		statement.executeUpdate(query);
+		statement.executeUpdate(queryBuilder.userWrite(user));
 	}
 
-	private void writeNote(Note note) throws SQLException {
-		String query = "INSERT INTO `testNotes` SET ";
-		query += String.format("`name`='%s' ", note.getName());
-		query += String.format("`second_name`='%s' ", note.getSecondName());
-		query += String.format("`last_name`='%s' ", note.getLastName());
-		query += String.format("`phone`='%s' ", note.getPhone());
-		query += note.getHomePhone() != null ? String.format("`home_phone`='%s' ", note.getHomePhone()) : "";
-		query += note.getAddress() != null ? String.format("`address`='%s' ", note.getAddress()) : "";
-		query += note.getEmail() != null ? String.format("`email`='%s' ", note.getEmail()) : "";
-		statement.executeUpdate(query);
-	}
-	
-	private void writeRelation(int userId, int noteId) throws SQLException {
-		String query = String.format("INSERT INTO `testUsersNotes` SET `user`='%s', `note`='%s'", userId, noteId);
-		statement.executeUpdate(query);
+	private String writeNote(Note note) throws SQLException {
+		int affectedRows = statement.executeUpdate(queryBuilder.noteWrite(getOwner(), note));
+		
+		if (affectedRows == 0) {
+            throw new SQLException("Creating note failed, no rows affected.");
+        }
+		
+		ResultSet resultSet = statement.getGeneratedKeys();
+		if (resultSet.next()) {
+        	String resId = String.valueOf(resultSet.getLong(1));
+        	resultSet.close();
+        	return resId;
+        } else {
+            throw new SQLException("Creating note failed, no ID obtained.");
+        }
 	}
 }

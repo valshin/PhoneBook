@@ -11,7 +11,7 @@ import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.MapStorage;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
-import me.noip.valshin.exceptions.RamDbException;
+import me.noip.valshin.exceptions.CoreException;
 import me.noip.valshin.security.ActiveUserAccessor;
 
 public class RamDB implements Db {
@@ -30,7 +30,7 @@ public class RamDB implements Db {
 	}
 
 	public String getOwner() {
-		return activeUserAccessor.getActiveUser().getLogin();
+		return activeUserAccessor.getActiveUserName().getLogin();
 	}
 
 	private String getNextNoteKey() {
@@ -45,17 +45,17 @@ public class RamDB implements Db {
 	}
 
 	@Override
-	public void updateNote(Note note, String id) throws RamDbException {
+	public void updateNote(Note note, String id) {
 		if (!storage.getUserNotes(getOwner()).containsKey(id)) {
-			throw new RamDbException("No note with id '" + id + "'");
+			throw new CoreException("No note with id '" + id + "'");
 		}
 		storage.getUserNotes(getOwner()).put(id, note);
 	}
 
 	@Override
-	public void deleteNote(String id) throws RamDbException {
+	public void deleteNote(String id) {
 		if (!storage.getUserNotes(getOwner()).containsKey(id)) {
-			throw new RamDbException("No note with id '" + id + "'");
+			throw new CoreException("No note with id '" + id + "'");
 		}
 		storage.getUserNotes(getOwner()).remove(id);
 	}
@@ -106,11 +106,11 @@ public class RamDB implements Db {
 	}
 
 	@Override
-	public void addUser(User user) throws RamDbException {
+	public void addUser(User user) {
 		for (Entry<String, User> entry : storage.getUsers().entrySet()) {
 			User u = entry.getValue();
 			if (user.getLogin().equals(u.getLogin())) {
-				throw new RamDbException("User with neame '" + user.getLogin() + "' already exist");
+				throw new CoreException("User with neame '" + user.getLogin() + "' already exist");
 			}
 		}
 		storage.getUsers().put(getUserKey(user), user);

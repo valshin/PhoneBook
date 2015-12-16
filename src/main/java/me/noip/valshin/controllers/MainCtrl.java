@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.User;
-import me.noip.valshin.exceptions.RamDbException;
+import me.noip.valshin.exceptions.CoreException;
 import me.noip.valshin.tools.data.Validator;
 import me.noip.valshin.tools.json.JsonHelper;
 
@@ -57,7 +57,7 @@ public class MainCtrl {
 			db.addUser(user);
 			logger.info("User added successfully");
 			return jsonHelper.okAnswer();
-		} catch (RamDbException e) {
+		} catch (CoreException e) {
 			logger.error(e.getMessage());
 			return jsonHelper.errorAnswer(e.getMessage());
 		}

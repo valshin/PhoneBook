@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.entities.constants.Sources;
-import me.noip.valshin.exceptions.RamDbException;
+import me.noip.valshin.exceptions.CoreException;
 import me.noip.valshin.tools.data.Validator;
 import me.noip.valshin.tools.io.requests.NotesRequestContext;
 import me.noip.valshin.tools.json.JsonHelper;
@@ -60,7 +60,7 @@ public class PhoneBookCtrl {
 		try {
 			String id = db.addNote(note);
 			return jsonHelper.jsonAnswer(id);
-		} catch (RamDbException e) {
+		} catch (CoreException e) {
 			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
@@ -76,7 +76,7 @@ public class PhoneBookCtrl {
 		try {
 			db.updateNote(note, id);
 			return jsonHelper.okAnswer();
-		} catch (RamDbException e) {
+		} catch (CoreException e) {
 			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
@@ -86,7 +86,7 @@ public class PhoneBookCtrl {
 		try {
 			db.deleteNote(id);
 			return jsonHelper.okAnswer();
-		} catch (RamDbException e) {
+		} catch (CoreException e) {
 			return jsonHelper.errorAnswer(e.getMessage());
 		}
 	}
