@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
 import me.noip.valshin.exceptions.CoreException;
-import me.noip.valshin.tools.io.services.JsonRW;
+import me.noip.valshin.tools.io.DataRW;
 public class FileDB extends RamDB{
 	protected Logger logger = Logger.getLogger(FileDB.class.getName());
 	@Autowired
-	private JsonRW io;
+	private DataRW io;
 	@PostConstruct
 	public void initStorage() throws IOException{
 		super.init(io.readData());

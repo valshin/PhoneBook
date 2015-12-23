@@ -1,12 +1,9 @@
 package me.noip.valshin.tools.io.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.validation.constraints.AssertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,9 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import me.noip.valshin.config.Config;
-import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.MapStorage;
-import me.noip.valshin.db.entities.User;
 import me.noip.valshin.tools.generators.NoteMapGenerator;
 import me.noip.valshin.tools.generators.UserMapGenerator;
 

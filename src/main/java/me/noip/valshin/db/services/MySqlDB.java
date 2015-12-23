@@ -39,53 +39,13 @@ public class MySqlDB implements Db{
 		if (statement != null) statement.close();
 	}
 	
-	private User makeUser(ResultSet resultSet, String login, String password) throws SQLException{
-		User user = new User();
-		user.setLogin(login);
-		user.setPassword(password);
-		user.setFio(resultSet.getString("fio"));
-		user.setId(resultSet.getLong("id"));
-		return user;
-	}
-	
-	private Note makeNote(ResultSet resultSet) throws SQLException{
-		Note note = new Note();
-		note.setOwner(resultSet.getLong("owner"));
-		note.setName(resultSet.getString("name"));
-		note.setSecondName(resultSet.getString("secondName"));
-		note.setLastName(resultSet.getString("lastName"));
-		note.setPhone(resultSet.getString("phone"));
-		if (resultSet.getString("homePhone") != null){
-			note.setHomePhone(resultSet.getString("homePhone"));
-		}
-		if (resultSet.getString("address") != null){
-			note.setAddress(resultSet.getString("address"));
-		}
-		if (resultSet.getString("email") != null){
-			note.setEmail(resultSet.getString("email"));
-		}
-		return note;
-	}
-	
-	private Map<String, Note> makeNotes(ResultSet resultSet) throws SQLException{
-		Map<String, Note> out = new HashMap<>();
-		while (resultSet.next()){
-			String key = String.format("%d", resultSet.getLong("id"));
-			out.put(key, makeNote(resultSet));
-		}
-		return out;
-	}
-
-	public long getOwner() {
-		return activeUserAccessor.getActiveUserName().getId();
-	}
-
 	@Override
 	public String addNote(Note note) {
 		note.setOwner(getOwner());
 		try {
 			return writeNote(note);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new CoreException(e);
 		}
 	}
@@ -93,8 +53,10 @@ public class MySqlDB implements Db{
 	@Override
 	public void updateNote(Note note, String id) {
 		try {
+			System.out.println(queryBuilder.noteUpdate(Long.valueOf(id), note));
 			statement.executeUpdate(queryBuilder.noteUpdate(Long.valueOf(id), note));
 		} catch (NumberFormatException | SQLException e) {
+			System.out.println(e.getMessage());
 			throw new CoreException("Could not update note", e);
 		}
 		
@@ -133,6 +95,7 @@ public class MySqlDB implements Db{
 			resultSet.close();
 			return out;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new CoreException("SQL error", e);
 		}
 	}
@@ -163,6 +126,55 @@ public class MySqlDB implements Db{
 			throw new CoreException("SQL error", e);
 		}
 	}
+	
+	public long getOwner() {
+		return activeUserAccessor.getActiveUserName().getId();
+	}
+	
+	private String writeNote(Note note) throws SQLException {
+		int affectedRows = statement.executeUpdate(queryBuilder.noteWrite(getOwner(), note));
+		
+		if (affectedRows == 0) {
+			throw new SQLException("Creating note failed, no rows affected.");
+		}
+		
+		ResultSet resultSet = statement.getGeneratedKeys();
+		if (resultSet.next()) {
+			String resId = String.valueOf(resultSet.getLong(1));
+			resultSet.close();
+			return resId;
+		} else {
+			throw new SQLException("Creating note failed, no ID obtained.");
+		}
+	}
+	
+	private Note makeNote(ResultSet resultSet) throws SQLException{
+		Note note = new Note();
+		note.setOwner(resultSet.getLong("owner"));
+		note.setName(resultSet.getString("name"));
+		note.setSecondName(resultSet.getString("second_name"));
+		note.setLastName(resultSet.getString("last_name"));
+		note.setPhone(resultSet.getString("phone"));
+		if (resultSet.getString("home_phone") != null){
+			note.setHomePhone(resultSet.getString("home_phone"));
+		}
+		if (resultSet.getString("address") != null){
+			note.setAddress(resultSet.getString("address"));
+		}
+		if (resultSet.getString("email") != null){
+			note.setEmail(resultSet.getString("email"));
+		}
+		return note;
+	}
+	
+	private Map<String, Note> makeNotes(ResultSet resultSet) throws SQLException{
+		Map<String, Note> out = new HashMap<>();
+		while (resultSet.next()){
+			String key = String.format("%d", resultSet.getLong("id"));
+			out.put(key, makeNote(resultSet));
+		}
+		return out;
+	}
 
 	@Override
 	public void addUser(User user) {
@@ -184,6 +196,7 @@ public class MySqlDB implements Db{
 				return user;
 			}
 		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 			throw new CoreException("SQL error", e);
 		}
 		return null;
@@ -193,20 +206,13 @@ public class MySqlDB implements Db{
 		statement.executeUpdate(queryBuilder.userWrite(user));
 	}
 
-	private String writeNote(Note note) throws SQLException {
-		int affectedRows = statement.executeUpdate(queryBuilder.noteWrite(getOwner(), note));
-		
-		if (affectedRows == 0) {
-            throw new SQLException("Creating note failed, no rows affected.");
-        }
-		
-		ResultSet resultSet = statement.getGeneratedKeys();
-		if (resultSet.next()) {
-        	String resId = String.valueOf(resultSet.getLong(1));
-        	resultSet.close();
-        	return resId;
-        } else {
-            throw new SQLException("Creating note failed, no ID obtained.");
-        }
+	
+	private User makeUser(ResultSet resultSet, String login, String password) throws SQLException{
+		User user = new User();
+		user.setLogin(login);
+		user.setPassword(password);
+		user.setFio(resultSet.getString("fio"));
+		user.setId(resultSet.getLong("id"));
+		return user;
 	}
 }

@@ -1,22 +1,21 @@
 package me.noip.valshin.config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import me.noip.valshin.tools.io.services.JsonRWIntegrationTest;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ContextConfiguration(classes={JsonRWIntegrationTest.class})
+@ContextConfiguration(classes={ConfigTest.class, Config.class})
 @Configuration
 @TestPropertySource(
 	properties = {
@@ -31,8 +30,8 @@ import me.noip.valshin.tools.io.services.JsonRWIntegrationTest;
 )
 public class ConfigTest {
 	@Bean
-	public Config config(){
-		return new Config();
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+		return new PropertySourcesPlaceholderConfigurer();
 	}
 	
 	@Autowired
@@ -45,7 +44,7 @@ public class ConfigTest {
 		assertEquals("localhost", config.getDbHost());
 		assertEquals("3306", config.getDbPort());
 		assertEquals("phonebook_by_valshin", config.getMysqlDbName());
-		assertEquals("jdbc:mysql://localhost:3306/phonebook_by_valshin", config.getUrl());
+		assertEquals("jdbc:mysql://localhost:3306/phonebook_by_valshin?useUnicode=true&characterEncoding=UTF-8", config.getUrl());
 		assertEquals("root", config.getMysqlDbUsername());
 		assertEquals("root", config.getMysqlDbPassword());
 	}

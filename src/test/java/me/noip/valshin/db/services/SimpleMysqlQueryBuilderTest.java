@@ -26,7 +26,7 @@ public class SimpleMysqlQueryBuilderTest {
 	
 	@Test
 	public void userReadTest(){
-		assertEquals("SELECT `id`, `fio` from `users` WHERE `login` = login1 AND `password` = pass1", queryBuilder.userRead("login1", "pass1"));
+		assertEquals("SELECT `id`, `fio` from `users` WHERE `login` = 'login1' AND `password` = 'pass1'", queryBuilder.userRead("login1", "pass1"));
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class SimpleMysqlQueryBuilderTest {
 	
 	@Test
 	public void updateNotesTest1(){
-		String expected = "UPDATE `notes` WHERE `id` = '1' SET `name` = 'name1', `second_name` = 'sn1', `last_name` = 'ln1', `phone` = '123'";
+		String expected = "UPDATE `notes` SET `name` = 'name1', `second_name` = 'sn1', `last_name` = 'ln1', `phone` = '123' WHERE `id` = '1'";
 		String obtained = queryBuilder.noteUpdate(1L, new Note(){{
 			setName("name1");
 			setSecondName("sn1");
@@ -130,7 +130,7 @@ public class SimpleMysqlQueryBuilderTest {
 	
 	@Test
 	public void updateNotesTest2(){
-		String expected = "UPDATE `notes` WHERE `id` = '2' SET `name` = 'name1', `second_name` = 'sn1', `last_name` = 'ln1', `phone` = '123', `home_phone` = '321', `address` = 'qwerty', `email` = 'qwe@rt.yu'";
+		String expected = "UPDATE `notes` SET `name` = 'name1', `second_name` = 'sn1', `last_name` = 'ln1', `phone` = '123', `home_phone` = '321', `address` = 'qwerty', `email` = 'qwe@rt.yu' WHERE `id` = '2'";
 		String obtained = queryBuilder.noteUpdate(2L, new Note(){{
 			setName("name1");
 			setSecondName("sn1");
@@ -145,7 +145,7 @@ public class SimpleMysqlQueryBuilderTest {
 	
 	@Test
 	public void updateNotesTest3(){
-		String expected = "UPDATE `notes` WHERE `id` = '333' SET `name` = 'name1', `second_name` = 'sn1', `last_name` = 'ln1', `phone` = '123', `address` = 'qwerty'";
+		String expected = "UPDATE `notes` SET `name` = 'name1', `second_name` = 'sn1', `last_name` = 'ln1', `phone` = '123', `address` = 'qwerty' WHERE `id` = '333'";
 		String obtained = queryBuilder.noteUpdate(333L, new Note(){{
 			setName("name1");
 			setSecondName("sn1");
@@ -158,7 +158,7 @@ public class SimpleMysqlQueryBuilderTest {
 	
 	@Test
 	public void updateNotesTest4(){
-		String expected = "UPDATE `notes` WHERE `id` = '444' SET `name` = 'name1', `second_name` = 'sn1', `last_name` = 'ln1', `phone` = '123', `email` = 'qwe@rt.yu'";
+		String expected = "UPDATE `notes` SET `name` = 'name1', `second_name` = 'sn1', `last_name` = 'ln1', `phone` = '123', `email` = 'qwe@rt.yu' WHERE `id` = '444'";
 		String obtained = queryBuilder.noteUpdate(444L, new Note(){{
 			setName("name1");
 			setSecondName("sn1");

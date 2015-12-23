@@ -3,9 +3,7 @@ package me.noip.valshin.db.services;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,7 +24,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import me.noip.valshin.config.Config;
-import me.noip.valshin.config.DataSourceConfig;
 import me.noip.valshin.db.Db;
 import me.noip.valshin.db.entities.Note;
 import me.noip.valshin.db.entities.User;
@@ -35,53 +32,42 @@ import me.noip.valshin.security.TestActiveUserAccessor;
 import me.noip.valshin.tools.generators.NoteArrayGenerator;
 import me.noip.valshin.tools.generators.NoteGenerator;
 import me.noip.valshin.tools.generators.UserGenerator;
+import me.noip.valshin.tools.io.services.JsonRW;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = { 
-		MySqlDBIntegrationTest.class, 
-		DataSourceConfig.class, 
+		FileDBIntegrationTest.class, 
 		Config.class, 
 		TestActiveUserAccessor.class, 
-		SimpleMysqlQueryBuilder.class})
+		JsonRW.class})
 @Configuration
 @TestPropertySource(properties = { "File_DB_Path=./src/test/resources/jsonrw.db",
-		"tablesQuery=./src/test/resources/testTablesQuery", "DB_Type=mysql", "DB_Host=localhost", "DB_Port=3306",
+		"DB_Type=file", "DB_Host=localhost", "DB_Port=3306",
 		"DB_Name=phonebook_by_valshin", "DB_User=root", "DB_Password=root" })
-public class MySqlDBIntegrationTest {
+public class FileDBIntegrationTest {
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
-	@Value("${tablesQuery}")
-	String queryPath;
+	@Value("${File_DB_Path}")
+	String filePath;
 	@Autowired
 	Config config;
 	@Autowired
 	TestActiveUserAccessor activeUserAccessor;
 	@Bean
 	public Db db(){
-		if (config.getDbType().equals(DbTypes.MYSQL)){
-			return new MySqlDB();
+		if (config.getDbType().equals(DbTypes.FILE)){
+			return new FileDB();
 		}
 		return null;
 	}
 	
-	@Autowired
-	DataSource dataSource;
-	
 	@After
-	public void closeConnection() throws SQLException {
-		Connection connection = dataSource.getConnection();
-		Statement statement = connection.createStatement();
-		statement.executeUpdate("DELETE FROM `notes`");
-		statement.executeUpdate("DELETE FROM `users`");
-		if (statement != null) {
-			statement.close();
-		}
-		if (connection != null){
-			connection.close();
-		}
+	public void deleteDb() {
+		File file = new File(filePath);
+		file.delete();
 	}
 	
 	@Autowired
@@ -283,3 +269,4 @@ public class MySqlDBIntegrationTest {
 		assertTrue(notes.size() == 8);
 	}
 }
+

@@ -42,7 +42,6 @@ public class JsonRW implements DataRW {
 		    }
 			return data;	
 		}
-		
 	}
 
 	@Override

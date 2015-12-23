@@ -52,9 +52,6 @@ public class RandomValuesGenerator {
 	}
 	
 	public static String getRandomPhone(){
-		return "+380(" +
-				getRandomString(2, digits) + 
-				")" + 
-				getRandomString(7, digits);
+		return getRandomString(12, digits);
 	}
 }

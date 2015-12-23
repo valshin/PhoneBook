@@ -94,7 +94,8 @@ public class RamDB implements Db {
 		Map<String, Note> out = new HashMap<String, Note>();
 		for (Entry<String, Note> entry : storage.getUserNotes(getOwner()).entrySet()) {
 			Note note = entry.getValue();
-			if (note.getPhone().indexOf(phone) + 1 != 0 || note.getHomePhone().indexOf(phone) + 1 != 0) {
+			if (note.getPhone().indexOf(phone) + 1 != 0 || 
+					(note.getHomePhone() != null && note.getHomePhone().indexOf(phone) + 1 != 0)) {
 				out.put(entry.getKey(), note.clone());
 			}
 		}
