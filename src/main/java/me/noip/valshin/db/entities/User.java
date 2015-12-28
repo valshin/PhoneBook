@@ -38,11 +38,11 @@ public class User {
 				getFio().equals(user.getFio());
 	}
 	
-	public User clone(User user){
+	public User clone(){
 		User newUser = new User();
-		newUser.setLogin(user.getLogin());
-		newUser.setPassword(user.getPassword());
-		newUser.setFio(user.getFio());
+		newUser.setLogin(getLogin());
+		newUser.setPassword(getPassword());
+		newUser.setFio(getFio());
 		return 	newUser;
 	}
 }

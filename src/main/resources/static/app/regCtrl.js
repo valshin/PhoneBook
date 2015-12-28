@@ -1,5 +1,6 @@
 app.controller('regCtrl', ['$rootScope', '$scope', '$http', '$state', function($rootScope, $scope, $http, $state){
     debugger;
+    $rootScope.authenticate();
     $scope.error = [];
     $scope.checkLogin = function(){
         if ($scope.login && /^(?!.*[_\W]).{3,}$/.test($scope.login)){

@@ -61,7 +61,7 @@ public class MapStorage {
 			for (Entry<String, Note> noteEntry : userNotesEntry.getValue().entrySet()){
 				Note n1 = noteEntry.getValue();
 				Note n2 = storage.getNotes().get(userNotesEntry.getKey()).get(noteEntry.getKey());
-			    if (!(n1.isEqual(n2))){
+			    if (!(n1.equals(n2))){
 			    	return false;
 			    }
 			}

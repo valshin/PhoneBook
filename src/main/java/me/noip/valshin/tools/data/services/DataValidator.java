@@ -41,7 +41,7 @@ public class DataValidator implements Validator{
 
 	@Override
 	public boolean checkPassword(String password) {
-		return checkByPattern(password, ValidatorConstants.LOGIN_PATTERN);
+		return checkByPattern(password, ValidatorConstants.PASSWORD_PATTERN);
 	}
 
 	@Override

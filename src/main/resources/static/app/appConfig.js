@@ -79,6 +79,9 @@ app.controller('mainCtrl', function($rootScope, $scope, $http, $state){
     };
 
     $rootScope.authenticate = function (credentials, callback) {
+        if ($rootScope.authenticated){
+            return;
+        }
         var headers = credentials ? {
             authorization: "Basic "
             + btoa(credentials.username + ":"
@@ -92,9 +95,11 @@ app.controller('mainCtrl', function($rootScope, $scope, $http, $state){
             if (data.name) {
                 $rootScope.authenticated = true;
                 console.log("Login succeeded");
+                $state.go('phonebook')
             } else {
                 console.log("Login failed");
                 $rootScope.authenticated = false;
+                $state.go('login')
             }
             callback && callback();
         }).error(function () {
@@ -115,6 +120,5 @@ app.controller('logoutCtrl', function($rootScope, $scope, $http, $state){
 });
 
 app.controller('homeCtrl', function($rootScope, $state){
-    $state.go($rootScope.authenticated ? 'phonebook' : 'login');
-    //$rootScope.setTabs($rootScope.authenticated ? 'phonebook' : 'login');
+    $rootScope.authenticate();
 });

@@ -2,7 +2,8 @@ app.run(function(editableOptions) {
     editableOptions.theme = 'bs3';
 });
 
-app.controller('pbCtrl', function($scope, $filter, $http) {
+app.controller('pbCtrl', function($rootScope, $scope, $filter, $http) {
+    $rootScope.authenticate();
     $scope.searchConditions = [
         {id: 'name', title: 'Имени '},
         {id: 'lastName', title: 'Фамилии '},
@@ -40,10 +41,11 @@ app.controller('pbCtrl', function($scope, $filter, $http) {
         }
         var notes = data.data;
         for (var i in notes){
-            $scope.notes[i] = {
+            var note = notes[i];
+            $scope.notes.push({
                 id: i,
-                data: notes[i]
-            }
+                data: note
+            });
         }
         $scope.notes.sort(function(a, b){
             return (a.lastName || '' + a.name || '' + a.secondName || '').localeCompare(b.lastName || '' + b.name || '' + b.secondName || '');

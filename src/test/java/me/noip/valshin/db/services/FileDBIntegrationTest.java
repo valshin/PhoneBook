@@ -94,13 +94,13 @@ public class FileDBIntegrationTest {
 		Map <String, Note> notes = db.getByLastName(note.getLastName());
 		assertTrue(notes.size() == 1);
 		String noteId = (String) notes.keySet().toArray()[0];
-		assertTrue(notes.get(noteId).isEqual(note));
+		assertTrue(notes.get(noteId).equals(note));
 		notes = db.getByName(note.getName());
-		assertTrue(notes.get(noteId).isEqual(note));
+		assertTrue(notes.get(noteId).equals(note));
 		notes = db.getByPhone(note.getPhone());
-		assertTrue(notes.get(noteId).isEqual(note));
+		assertTrue(notes.get(noteId).equals(note));
 		notes = db.getByPhone(note.getHomePhone());
-		assertTrue(notes.get(noteId).isEqual(note));
+		assertTrue(notes.get(noteId).equals(note));
 		
 		assertTrue(db.getByName("123").size() == 0);
 		assertTrue(db.getByLastName("123").size() == 0);

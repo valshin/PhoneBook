@@ -35,7 +35,7 @@
                     | {{ note.data.lastName }}
             td
                 span(editable-text='note.data.name', e-name='name', e-form='rowform', onbeforesave="checkName($data, 'Имя')", e-required)
-                    | {{ note.data.name || 'empty' }}
+                    | {{ note.data.name }}
             td
                 span(editable-text='note.data.secondName', e-name='secondName', e-form='rowform', onbeforesave="checkName($data, 'Отчество')", e-required)
                     | {{ note.data.secondName }}

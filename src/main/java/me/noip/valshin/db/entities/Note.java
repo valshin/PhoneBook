@@ -59,14 +59,8 @@ public class Note {
 		this.owner = owner;
 	}
 	
-	public boolean isEqual(Note note){
-		return 	getName().equals(note.getName()) && 
-				getSecondName().equals(note.getSecondName()) &&
-				getLastName().equals(note.getLastName()) &&
-				getPhone().equals(note.getPhone()) &&
-				(getHomePhone() == note.getHomePhone() || getHomePhone().equals(note.getHomePhone())) &&
-				(getAddress() == note.getAddress() || getAddress().equals(note.getAddress())) &&
-				(getEmail() == note.getEmail() || getEmail().equals(note.getEmail()));
+	public boolean equals(Note note){
+		return 	toString().equals(note.toString());
 	}
 	
 	public Note clone(){
@@ -81,15 +75,14 @@ public class Note {
 		return 	newNote;
 	}
 	
-	@Override
 	public String toString(){
 		return "\nName: " + getName() + 
 				"\nSecondName: " + getSecondName() + 
 				"\nLastName: " + getLastName() +
 				"\nPhone: " + getPhone() +
-				"\nHomePhone: " + getHomePhone() +
-				"\nAddress: " + getAddress() +
-				"\nEmail: " + getEmail();
+				(getHomePhone() != null ? "\nHomePhone: " + getHomePhone() : "") +
+				(getAddress() != null ? "\nAddress: " + getAddress() : "") +
+				(getEmail() != null ? "\ne-mail: " + getEmail() : "");
 	}
 }
 
